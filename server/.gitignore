@@ -1,0 +1,6 @@
+node_modules
+
+install/status.txt
+public/u/
+.env
+
