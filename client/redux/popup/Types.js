@@ -1,0 +1,3 @@
+export const POPUP_LOADING = 'POPUP_LOADING'
+export const POPUP_UPDATE = 'POPUP_UPDATE'
+export const POPUP_FAIL = 'POPUP_FAIL'

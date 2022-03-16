@@ -1,0 +1,3 @@
+export const GROUP_LOADING = 'GROUP_LOADING'
+export const GROUP_UPDATE = 'GROUP_UPDATE'
+export const GROUP_FAIL = 'GROUP_FAIL'

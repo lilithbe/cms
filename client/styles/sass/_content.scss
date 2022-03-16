@@ -1,0 +1,17 @@
+.layout-main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 20vh;
+    justify-content: space-between;
+    padding-left: 0;
+}
+.side-mode{
+    .layout-main-container {
+        min-height: 100vh;
+        padding: 3.5rem 1.5rem 1.5rem 1.5rem;
+        transition: margin-left $transitionDuration;
+    }
+}
+.layout-main {
+    flex: 1 1 auto;
+}

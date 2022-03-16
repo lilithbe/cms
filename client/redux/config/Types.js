@@ -1,0 +1,3 @@
+export const CONFIG_LOADING = 'CONFIG_LOADING'
+export const CONFIG_UPDATE = 'CONFIG_UPDATE'
+export const CONFIG_FAIL = 'CONFIG_FAIL'

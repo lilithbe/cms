@@ -1,0 +1,13 @@
+.p-sidebar-full{
+    .p-sidebar-content{
+        padding: 0 !important;
+    }
+}
+.p-sidebar.header-hide{
+    .p-sidebar-header{
+        display: none;
+    }
+    .p-sidebar-content{
+        padding: 0 !important;
+    }
+}

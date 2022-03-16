@@ -1,0 +1,76 @@
+.socket-lamp-box{
+    position: fixed;
+    bottom:0;
+    right:-162px;
+    z-index: 99999;
+    transition: all .2s;
+    width: 200px;
+    padding: 6px 10px;
+    background-color: rgba(0, 0, 0, 0.555);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow-x: hidden;
+}
+.socket-lamp-box.show{
+    right: 0;
+}
+.socket-view-btn{
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all .2s;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    padding: 0 3px;
+    background-color: rgba(255, 255, 255, 0.925);
+   
+}
+.socket-lamp-box.show .socket-view-btn{
+    box-shadow: 0px 0px 17px 3px rgb(239, 255, 147); 
+}
+.socket-lamp,
+.socket-lamp-account,
+.socket-lamp-message{
+    cursor: pointer;
+    margin-right: 10px;
+    transition: all .2s;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    padding: 0 3px;
+}
+.socket-lamp.on{
+    background-color: rgba(173, 255, 157, 0.925);
+    box-shadow: 0px 0px 17px 3px rgb(239, 255, 147);
+}
+.socket-lamp-account.on{
+    background-color: rgba(173, 229, 255, 0.925);
+    box-shadow: 0px 0px 17px 3px rgb(239, 255, 147);
+}
+
+.socket-lamp-message.on{
+    cursor: pointer;
+    background-color: rgba(237, 215, 255, 0.925);
+    box-shadow: 0px 0px 17px 3px rgb(239, 255, 147);
+}
+.socket-lamp-account.off,
+.socket-lamp.off{
+    background-color: rgba(248, 32, 32, 0.925);
+}
+.data-view-box{
+    right: -200px;
+    position: fixed;
+    bottom:38px;
+    width: 200px;
+    min-height: 100px;
+    z-index: 99999;
+    transition: all .2s;
+    padding: 6px 10px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    background-color: rgba(255, 209, 209, 0.945);
+    border: 1px solid rgb(180, 180, 180);
+}
+.data-view-box.show{
+    right: 0;
+    z-index: 100000;
+    background-color: rgba(173, 173, 173, 0.945);
+}

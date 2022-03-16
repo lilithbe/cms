@@ -1,0 +1,3 @@
+export const BOARD_LOADING = 'BOARD_LOADING'
+export const BOARD_UPDATE = 'BOARD_UPDATE'
+export const BOARD_FAIL = 'BOARD_FAIL'
