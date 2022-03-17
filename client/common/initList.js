@@ -168,3 +168,146 @@ export const initPost={
     codeBoardData:[]
 }
 
+export const fontSizeOptions=[
+    {label:'8px',value:'8px'},
+    {label:'10px',value:'10px'},
+    {label:'12px',value:'12px'},
+    {label:'14px',value:'14px'},
+    {label:'16px',value:'16px'},
+    {label:'18px',value:'18px'},
+    {label:'20px',value:'20px'},
+    {label:'22px',value:'22px'},
+    {label:'24px',value:'24px'},
+    {label:'26px',value:'26px'},
+    {label:'28px',value:'28px'},
+    {label:'30px',value:'30px'},
+    {label:'32px',value:'32px'},
+    {label:'35px',value:'35px'},
+    {label:'40px',value:'40px'},
+    {label:'45px',value:'45px'},
+    {label:'50px',value:'50px'},
+    {label:'55px',value:'55px'},
+    {label:'60px',value:'60px'},
+    {label:'70px',value:'70px'},
+    {label:'80px',value:'80px'},
+    {label:'90px',value:'90px'},
+    {label:'100px',value:'100px'}
+]
+export const boolOptions=[
+    {label:'used',value:true},
+    {label:'not used',value:false},
+]
+export const shadowSizeOptions=[
+    {label:'0px',value:'0px'},
+    {label:'1px',value:'1px'},
+    {label:'2px',value:'2px'},
+    {label:'3px',value:'3px'},
+    {label:'4px',value:'4px'},
+    {label:'5px',value:'5px'},
+    {label:'6px',value:'6px'},
+    {label:'7px',value:'7px'},
+    {label:'8px',value:'8px'},
+    {label:'9px',value:'9px'},
+    {label:'10px',value:'10px'},
+    {label:'12px',value:'12px'},
+    {label:'14px',value:'14px'},
+    {label:'16px',value:'16px'},
+    {label:'18px',value:'18px'},
+    {label:'20px',value:'20px'},
+    {label:'22px',value:'22px'},
+    {label:'24px',value:'24px'},
+    {label:'26px',value:'26px'},
+    {label:'28px',value:'28px'},
+    {label:'30px',value:'30px'},
+    {label:'40px',value:'40px'},
+    {label:'50px',value:'50px'},
+    {label:'60px',value:'60px'},
+    {label:'70px',value:'70px'},
+    {label:'80px',value:'80px'},
+    {label:'90px',value:'90px'},
+    {label:'100px',value:'100px'},
+]
+export const alignOptions=[
+    {label:'left',value:'left'},
+    {label:'center',value:'center'},
+    {label:'right',value:'right'},
+]
+
+export const navgationDefaultSettingOptions=[
+    {label:'accountButtonPosition', key:'accountButtonPosition', defaultValue:'navbar', inputType:'accountSelect'},
+    {label:'isScrollMovingNavFixed', key:'isScrollMovingNavFixed', defaultValue:true, inputType:'bool'},
+    {label:'isNavBrand', key:'isNavBrand', defaultValue:true, inputType:'bool'},
+    {label:'isNavBrandText', key:'isNavBrandText', defaultValue:true, inputType:'bool'},
+    {label:'isSearchButton', key:'isSearchButton', defaultValue:true, inputType:'bool'},
+    {label:'isFixedValueCopy', key:'isFixedValueCopy', defaultValue:true, inputType:'bool'},
+    {label:'isHomeButton', key:'isHomeButton', defaultValue:true, inputType:'bool'},
+]
+export const navgationOptionsSettingArr = [
+    { label: 'navbar Brand', key: 'navbarBrand', defaultValue: '/logo-light.png', inputType: 'image' },
+    { label: 'navbar Brand Text', key: 'navbarBrandText', defaultValue: '', inputType: 'inputtext' },
+    { label: 'navbar Font Family', key: 'navbarFontFamily', defaultValue: 'NIXGONL-Vb', inputType: 'fontfamily' },
+    { label: 'navbar Button Position', key: 'navbarButtonPosition', defaultValue: 'center', inputType: 'align' },
+    { label: 'navbar Padding Y', key: 'navbarPaddingY', defaultValue: "py-0", inputType: 'padding' },
+    { label: 'navbar Background Color', key: 'navbarBgColor', defaultValue: '#000000', inputType: 'color' },
+    { label: 'navbar Hover Background Color', key: 'navbarHoverBgColor', defaultValue: '#000000', inputType: 'color' },
+    { label: 'navbar Focus Background Color', key: 'navbarFocusBgColor', defaultValue: '#000000', inputType: 'color' },
+    { label: 'navbar Font Color', key: 'navbarColor', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'navbar Font HoverColor', key: 'navbarHoverColor', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'navbar Font Focus Color', key: 'navbarFocusColor', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'navbar Font Size', key: 'navbarFontSize', defaultValue: '15px', inputType: 'fontsize' },
+    { label: 'is Navbar Font Shadow', key: 'isNavbarFontShadow', defaultValue: false, inputType: 'bool' },
+    { label: 'navbar Font Shadow', key: 'navbarFontShadow', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'navbar Hover Font Shadow', key: 'navbarHoverFontShadow', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'navbar Focus Font Shadow', key: 'navbarFocusFontShadow', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'navbar Font Shadow Weight', key: 'navbarFontShadowWeight', defaultValue: '0px', inputType: 'shadowsize' }
+]
+export const fixedNavgationOptionsSettingArr = [
+    { label: 'fixed Navbar Brand', key: 'fixedNavbarBrand', defaultValue: '/logo-light.png', inputType: 'image' },
+    { label: 'fixed Navbar Brand Text', key: 'fixedNavbarBrandText', defaultValue: '', inputType: 'inputtext' },
+    { label: 'fixed Navbar Font Family', key: 'fixedNavbarFontFamily', defaultValue: 'NIXGONL-Vb', inputType: 'fontfamily' },
+    { label: 'fixed Navbar Button Position', key: 'fixedNavbarButtonPosition', defaultValue: 'center', inputType: 'align' },
+    { label: 'fixed Navbar Padding Y', key: 'fixedNavbarPaddingY', defaultValue: "py-0", inputType: 'padding' },
+    { label: 'fixed Navbar Background Color', key: 'fixedNavbarBgColor', defaultValue: '#000000', inputType: 'color' },
+    { label: 'fixed Navbar Hover Background Color', key: 'fixedNavbarHoverBgColor', defaultValue: '#000000', inputType: 'color' },
+    { label: 'fixed Navbar Focus Background Color', key: 'fixedNavbarFocusBgColor', defaultValue: '#000000', inputType: 'color' },
+    { label: 'fixed Navbar Color', key: 'fixedNavbarColor', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'fixed Navbar Hover Color', key: 'fixedNavbarHoverColor', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'fixed Navbar Focus Color', key: 'fixedNavbarFocusColor', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'fixed Navbar Font Size', key: 'fixedNavbarFontSize', defaultValue: '15px', inputType: 'fontsize' },
+    { label: 'is Fixed Navbar Font Shadow', key: 'isFixedNavbarFontShadow', defaultValue: false, inputType: 'bool' },
+    { label: 'fixed Navbar Font Shadow', key: 'fixedNavbarFontShadow', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'fixed Navbar Hover FontShadow', key: 'fixedNavbarHoverFontShadow', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'fixed Navbar Focus FontShadow', key: 'fixedNavbarFocusFontShadow', defaultValue: '#ffffff', inputType: 'color' },
+    { label: 'fixed Navbar Font ShadowWeight', key: 'fixedNavbarFontShadowWeight', defaultValue: '0px', inputType: 'shadowsize' }
+]
+export const topOptionsSettingArr = [
+    { label: 'isTopMenu', key: 'isTopMenu', defaultValue: false, inputType: 'bool' },
+    { label: 'isWelcomMent', key: 'isWelcomMent', defaultValue: true, inputType: 'bool' },
+    { label: 'isToday', key: 'isToday', defaultValue: true, inputType: 'bool' },
+    { label: 'isWatch', key: 'isWatch', defaultValue: true, inputType: 'bool' },
+    { label: 'isWeather', key: 'isWeather', defaultValue: true, inputType: 'bool' },
+    { label: 'isQRCode', key: 'isQRCode', defaultValue: true, inputType: 'bool' },
+    { label: 'isRSS', key: 'isRSS', defaultValue: true, inputType: 'bool' },
+    { label: 'isSocialButtons', key: 'isSocialButtons', defaultValue: true, inputType: 'bool' }
+]
+export const headerOptionsSettingArr = [
+    { label: 'isHead', key: 'isHead', defaultValue: false, inputType: 'bool', },
+    { label: 'isHeadLogo', key: 'isHeadLogo', defaultValue: true, inputType: 'bool', },
+    { label: 'isHeadLogoText', key: 'isHeadLogoText', defaultValue: true, inputType: 'bool', },
+
+    { label: 'headLogo', key: 'headLogo', defaultValue: '/logo-light.png', inputType: 'image', },
+    { label: 'headLogoText', key: 'headLogoText', defaultValue: '', inputType: 'inputtext', },
+    { label: 'headBackgroundColor', key: 'headBackgroundColor', defaultValue: '#ffffff', inputType: 'color', },
+    { label: 'headBackgroundImage', key: 'headBackgroundImage', defaultValue: '', inputType: 'image', },
+    { label: 'headFontSize', key: 'headFontSize', defaultValue: '3rem', inputType: 'fontsize', },
+    { label: 'headTextColor', key: 'headTextColor', defaultValue: '#000000', inputType: 'color', },
+]
+
+export const bootstrapPaddingOptions = [
+    { label: '0', value: 'py-0' },
+    { label: '1', value: 'py-1' },
+    { label: '2', value: 'py-2' },
+    { label: '3', value: 'py-3' },
+    { label: '4', value: 'py-4' },
+    { label: '5', value: 'py-5' },
+]

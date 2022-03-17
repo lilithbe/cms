@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 const AdminDialog = styled.div`
     position:fixed;
-    bottom:0;
+    top:0;
     ${(props) => {
         if (props.position === 'right') {
             return `right:0;`
@@ -15,6 +15,10 @@ const AdminDialog = styled.div`
             return `left:0;`
         }
     }}
+    .p-button{
+        padding-top:2px;
+        padding-bottom:2px;
+    }
 `
 
 const AdminSetupButton = ({children,authData, openType, position, icon, buttonClassName,buttonLabel, tooltip, header,dismissableMask, }) => {

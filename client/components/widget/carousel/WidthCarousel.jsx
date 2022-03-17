@@ -17,6 +17,7 @@ import { Dropdown } from 'primereact/dropdown';
 import IconTemplate from '../../template/IconTemplate';
 import PageSelect from '../../formControl/PageSelect';
 import ColorSelecter from '../../formControl/ColorSelecter';
+import { alignOptions } from '../../../common/initList';
 
 
 const WriteEditor = dynamic(() => import("../../editor/WriteEditor"), { ssr: false });
@@ -92,14 +93,23 @@ const CarouselWrapper = styled.div`
           }
 
 `
+const CarouselItemWrapper=styled.div`
+          ${(props)=>{
+              return `
+              height:${props.item.height}px;
+              background-image: url("${props.item.src}");         
+              background-repeat:no-repeat;
+              background-position: ${props.item.backgroundPosition};
+              `
+          }}
+
+          @media (min-width: 1200) {
+            background-position: right;
+          }
+         
+`
 const WidthCarousel = ({data, items }) => {
     const carousel = useRef(null)
-    useEffect(() => {
-      console.log(data)
-    
-      
-    }, [data])
-    
     return (
         <CarouselWrapper co={data.options}>
             <OwlCarousel
@@ -133,16 +143,10 @@ const WidthCarousel = ({data, items }) => {
                     const fp=item.position.split('-')[0]
                     const lp=item.position.split('-')[1]
                     return (
-                        <div key={i} 
+                        <CarouselItemWrapper key={i} 
+                        item={item}
                         className={`p-sm-1 p-md-2 p-lg-5 d-flex align-items-${fp==='top'?'start':fp==='bottom'?'end':fp}`}
-                        style={{
-                            backgroundImage: `url("${item.src}")`,
-                            backgroundSize:'cover',
-                            backgroundRepeat:'no-repeat',
-                            height: item.height,
-
-                        }}>
-                           
+                       >
                            <div className=' w-100'>
                            <div className={`text-${lp==='left'?'start':lp==='right'?'end':lp} `} >
                                 {HtmlParser(item.label)}
@@ -160,7 +164,7 @@ const WidthCarousel = ({data, items }) => {
                                 </div>}
                             </div>
                            </div>
-                        </div>
+                        </CarouselItemWrapper>
                     )
                 })}
             </OwlCarousel>
@@ -178,11 +182,7 @@ WidthCarousel.defaultProps = {
         {
             label: 'Flamboyant Pink Top',
             src: '/assets/carousel/carousel_1.png',
-        },
-        {
-            label: 'Flamboyant Pink Top',
-            src: '/assets/carousel/carousel_2.png',
-        },
+        }
     ]
 }
 
@@ -203,6 +203,7 @@ export const WidthCarouselSetting = ({ widget, onChange }) => {
     ]
     const newItem = {
         src: '/assets/carousel/carousel_1.png',
+        backgroundPosition:'right',
         width: 400,
         height: 150,
         label: '',
@@ -344,7 +345,7 @@ const ItemSettingTemplate = ({ item, addCallbak, lastIndex, index, deleteCallbak
                            
                             <small>Select Image</small>
                         </th>
-                        <td colSpan={3}><FileUpload
+                        <td colSpan={1}><FileUpload
                             addId={index}
                             fileType={'image'}
                             callback={(res) => {
@@ -352,7 +353,20 @@ const ItemSettingTemplate = ({ item, addCallbak, lastIndex, index, deleteCallbak
                                 onChange({ ...item, ...res.data.result },index)
                             }} />
                             </td>
+                            <td>
+                                ImagePosition
+                            </td>
+                            <td ><SelectButton
+                            className='p-buttonset-sm'
+                            value={item.backgroundPosition}
+                            options={alignOptions}
+                            onChange={(e) => {
+                                onChange({ ...item, backgroundPosition:e.value },index)
+                            }} />
+                            </td>
                     </tr>
+
+                    
                     <tr>
                         <th>Label</th>
                         {/* <td>{HtmlParser(item.label)}</td> */}

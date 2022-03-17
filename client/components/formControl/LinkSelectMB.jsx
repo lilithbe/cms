@@ -1,6 +1,11 @@
+import { useState, useRef } from 'react'
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import PropTypes from 'prop-types'
+
 import { Dropdown } from 'primereact/dropdown'
 import { SelectButton } from 'primereact/selectbutton'
-import { useState, useRef } from 'react'
+
 import { connect } from 'react-redux'
 import { postApi } from '../../api'
 import { LIST } from '../../common/path'
@@ -8,6 +13,62 @@ import { Toast } from 'primereact/toast'
 import HtmlParser from 'react-html-parser'
 import Link from 'next/link'
 import { howMushTime } from '../../lib/calculator'
+
+
+const LinkSelectMB = ({ value, callback, configData, boardData, groupData, isModal }) => {
+  const [isLinkOpen, setIsLinkOpen] = useState(false)
+  const [link, setLink] = useState(value)
+  return (
+    isModal ?
+      <>
+        <Button tooltip={link} tooltipOptions={{ position: 'bottom' }}
+          className={`p-button-sm p-button-secondary ${link !== '' ? 'p-button-outlined' : null}`} icon={'bi bi-link-45deg'} onClick={() => { setIsLinkOpen(true) }} />
+        <Dialog header={`Link Selectr`} visible={isLinkOpen} onHide={() => setIsLinkOpen(false)} dismissableMask>
+          <PageSelect
+            configData={configData} boardData={boardData} groupData={groupData}
+            value={link}
+            onChange={(url) => {
+              callback(url)
+              setLink(url)
+              setIsLinkOpen(false)
+            }} />
+        </Dialog>
+      </>
+      : <PageSelect
+        configData={configData} boardData={boardData} groupData={groupData}
+        value={link}
+        onChange={(url) => {
+          callback(url)
+          setLink(url)
+          setIsLinkOpen(false)
+        }} />
+  )
+}
+
+const mapStateToProps = (state) => {
+  return {
+    configData: state.configData,
+    boardData: state.boardData,
+    groupData: state.groupData,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LinkSelectMB)
+
+LinkSelectMB.propTypes = {
+  callback: PropTypes.func,
+  isModal: PropTypes.bool,
+}
+LinkSelectMB.defaultProps = {
+  callback: () => { console.log('not icons Callback. ') },
+  isModal: true
+}
+
 
 const PageSelect = ({ configData, boardData, groupData, value, onChange }) => {
   const contentInit = {
@@ -103,14 +164,7 @@ const PageSelect = ({ configData, boardData, groupData, value, onChange }) => {
             }, { boardValue: v, offset: 0, limit: 50 })
           }} />
         ) : null}
-
-
       </div>
-      {/* {isSelectBoard? (
-            <DropdownT value={content.id} options={contentList} optionLabel="subject" optionValue={"id"} onChange={(v)=>{
-                setContent({...content,...contentList.filter(f=>f.id===v)[0]})
-            }} />
-          ) : null} */}
       {isSelectBoard ? (
         <div>
           <table className='table table-sm'>
@@ -163,20 +217,6 @@ const PageSelect = ({ configData, boardData, groupData, value, onChange }) => {
     </div>
   );
 }
-const mapStateToProps = (state) => {
-  return {
-    configData: state.configData,
-    boardData: state.boardData,
-    groupData: state.groupData,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(PageSelect)
-
 
 const DropdownT = ({ options, optionLabel, optionValue, value, onChange }) => {
   return (

@@ -10,6 +10,7 @@ import { postApi } from "../api";
 import AdminDialogButton from "../components/admin/AdminDialogButton";
 import AdminSetupButton from "../components/admin/AdminSetupButton";
 import PageSetting from "../components/admin/pageSetting/PageSetting";
+import AdminSpeedDial from "../components/admin/AdminSpeedDial";
 const Layout = ({ children, configData,setPage, authData, boardData, socketData }) => {
   const router = useRouter();
 
@@ -88,46 +89,33 @@ const Layout = ({ children, configData,setPage, authData, boardData, socketData 
           return (
             <MainLayout >
               {children}
-              <AdminSetupButton openType="modal" buttonLabel="Page Setting" header="Page Setting">
-                <PageSetting />
-              </AdminSetupButton>
-          
             </MainLayout>
           );
         } else if (pathnames[1] === 'shop') {
           return (
             <MainLayout >
               {children}
-              <AdminSetupButton openType="modal" buttonLabel="Page Setting" header="Page Setting">
-                <PageSetting />
-              </AdminSetupButton>
+         
             </MainLayout>
           );
         } else if(pathnames[1]==='content') {
           return (
             <MainLayout >
               {children}
-              <AdminSetupButton openType="modal" buttonLabel="Page Setting" header="Page Setting">
-                <PageSetting />
-              </AdminSetupButton>
+           
             </MainLayout>
           );
         }else if(pathnames[1]==='template'){
           return (
             <MainLayout >
             {children}
-            <AdminSetupButton openType="modal" buttonLabel="Page Setting" header="Page Setting">
-                <PageSetting />
-              </AdminSetupButton>
+        
           </MainLayout>
           );
         }else{
           return (
             <MainLayout >
               {children}
-              <AdminSetupButton openType="modal" buttonLabel="Page Setting" header="Page Setting">
-                <PageSetting />
-              </AdminSetupButton>
             </MainLayout>
           );
         }

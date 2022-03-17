@@ -27,7 +27,7 @@ const Header = ({ authData, configData, isSearch, setIsSearch }) => {
     useEffect(() => play(true));
 
     return (
-        <div className='d-none d-md-block'>
+        <div className='d-none d-lg-block'>
             <Sidebar className='d-none-header d-none-scroll py-2' blockScroll 
                 style={{ height: 'auto',overflow:"hidden" }} position='top' showCloseIcon={false} visible={isSearch} onHide={() => { setIsSearch(false) }}>
                 <div className="p-inputgroup">

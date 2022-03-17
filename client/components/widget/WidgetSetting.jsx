@@ -5,7 +5,8 @@ import { InputText } from 'primereact/inputtext';
 import { widgetList } from './widgetObject';
 const WidgetSetting = ({ widget, onChange, widgetComponent }) => {
     return (
-        <TabView>
+        <div style={{minWidth:"800px"}}>
+            <TabView>
             <TabPanel header="Widget Setting">
                 <InputText 
                 value={widget.label} 
@@ -25,9 +26,10 @@ const WidgetSetting = ({ widget, onChange, widgetComponent }) => {
                 }} />
             </TabPanel>
             <TabPanel header={`${widget.label} Setting`}>
-                {widgetComponent.setting(widget,onChange)}
+                {widgetComponent.setting(widget,onChange,widgetComponent)}
             </TabPanel>
         </TabView>
+        </div>
     )
 }
 

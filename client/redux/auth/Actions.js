@@ -55,3 +55,18 @@ export const authFail = (data) => {
     payload: data,
   }
 }
+
+export const setAdminMode = (data) => {
+  return (dispatch) => {
+    try {
+      dispatch(authLoading(true))
+      dispatch(authUpdate({isAdminMode:data}))
+      
+      dispatch(authLoading(false))
+
+    } catch (error) {
+      dispatch(authLoading(false))
+      dispatch(authFail(error))
+    }
+  }
+}

@@ -140,9 +140,10 @@ headTextColor:'#000000',
 
 isHeadLogoText:true,
 isHeadLogo:true,
+isHead:false,
 
 isTopMenu:false,
-isHead:false,
+
 
 isWelcomMent:true,
 isToday:true,
@@ -153,7 +154,8 @@ isRSS:true,
 isSocialButtons:true,
 
 
-accountButtonPosition:'navbar',                                
+accountButtonPosition:'navbar',   
+
 isScrollMovingNavFixed:true,                                
 
 isNavBrand:true,     
@@ -161,11 +163,10 @@ isNavBrandText:true,
 isSearchButton:true,                                
 isFixedValueCopy:true,
 isHomeButton:true,
+
 navbarBrand:'/logo-light.png',
 navbarBrandText:process.env.SITE_NAME,
-
 navbarFontFamily:'NIXGONL-Vb',
-
 navbarButtonPosition:'center',                                
 navbarPaddingY:"py-0",                                
 navbarBgColor:'#000000',      
@@ -181,22 +182,9 @@ navbarHoverFontShadow:'#ffffff',
 navbarFocusFontShadow:'#ffffff',                                
 navbarFontShadowWeight:'0px',     
 
-
-navbarBorderTopLineWeight:"0px",
-navbarBorderBottomLineWeight:"0px",
-navbarBorderTopLineColor:"#000000",
-navbarBorderBottomLineColor:"#000000",
-navbarBorderTopShadowWeight:"0px",
-navbarBorderBottomShadowWeight:"0px",
-navbarBorderTopShadowColor:"#000000",
-navbarBorderBottomShadowColor:"#000000",
-
-navItemBorderWeight:"0px",
-navItemBorderColor:"#000000",
-navItemPaddingY:"py-2",
-
 fixedNavbarBrand:'/logo-light.png',  
-fixedNavbarBrandText:process.env.SITE_NAME,                
+fixedNavbarBrandText:process.env.SITE_NAME,     
+fixedNavbarFontFamily:'NIXGONL-Vb',           
 fixedNavbarButtonPosition:'center',                                
 fixedNavbarPaddingY:"py-0",                                
 fixedNavbarBgColor:'#000000',    
@@ -214,6 +202,18 @@ fixedNavbarFontShadowWeight:'0px',
 
 
 
+navItemBorderWeight:"0px",
+navItemBorderColor:"#000000",
+navItemPaddingY:"py-2",
+
+navbarBorderTopLineWeight:"0px",
+navbarBorderBottomLineWeight:"0px",
+navbarBorderTopLineColor:"#000000",
+navbarBorderBottomLineColor:"#000000",
+navbarBorderTopShadowWeight:"0px",
+navbarBorderBottomShadowWeight:"0px",
+navbarBorderTopShadowColor:"#000000",
+navbarBorderBottomShadowColor:"#000000",
 
 
 }

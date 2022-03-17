@@ -108,11 +108,12 @@ const WriteBody = ({ authData, configData, boardData, groupData, setAuthUpdate }
             toast.current.show({ severity: "error", summary: "error Message", detail: "제목이 너무 짧습니다." });
             return;
         }
-
+      
         postApi(
             setIsLoading,
             `${WRITE}/${boardConfig.boardType}`,
             (res) => {
+                console.log(res)
                 if (res.data.status) {
                     setAuthUpdate(res.data.account);
                     router.push(`/content/list/${board}`);

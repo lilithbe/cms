@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import Link from "next/link";
 import { LIST } from "../../../common";
 import { postApi } from "../../../api";
 // import {howMushTime} from '../../../lib'
-import moment from 'moment'
+import moment from 'moment' 
 const PrimeTable = ({ boardValue, authData }) => {
   const [boardList, setBoardList] = useState([]);
   const [boardCount, setBoardCount] = useState(0);

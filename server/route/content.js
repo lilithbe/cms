@@ -138,12 +138,10 @@ route.post("/write/:boardType", (req, res) => {
         .then((myAcc) => {
           myAcc.allExp += writeExp;
           myAcc.exp += writeExp;
+          console.log(myAcc)
           setMyAccount(myAcc)
             .then((newMyAcc) => {
               req.body.id = v4();
-
-             
-             
               contentTable(req.body.boardName)
                 .create(req.body)
                 .then((data) => {

@@ -12,6 +12,7 @@ const initialState = {
   failData: null, 
   isLogin: false,
   isAdmin:false,
+  isAdminMode:false,
   remember:false,
   lastIp:'',
   exp:0,
