@@ -267,6 +267,7 @@ const OptionSettingTemplate = ({ isLoading, arr, navConfig, callback }) => {
                         case 'image':
                             return (
                                 <FileUpload fileType='image'
+                                    addId={row.key}
                                     callback={(res) => {
                                         console.log(res.data.result)
                                         callback({...navConfig,[row.key]:res.data.result.src})

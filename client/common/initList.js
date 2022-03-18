@@ -292,7 +292,6 @@ export const topOptionsSettingArr = [
 ]
 export const headerOptionsSettingArr = [
     { label: 'isHead', key: 'isHead', defaultValue: false, inputType: 'bool', },
-    { label: 'isHeadLogo', key: 'isHeadLogo', defaultValue: true, inputType: 'bool', },
     { label: 'isHeadLogoText', key: 'isHeadLogoText', defaultValue: true, inputType: 'bool', },
 
     { label: 'headLogo', key: 'headLogo', defaultValue: '/logo-light.png', inputType: 'image', },

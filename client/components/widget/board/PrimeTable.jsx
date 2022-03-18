@@ -8,7 +8,9 @@ import { LIST } from "../../../common";
 import { postApi } from "../../../api";
 // import {howMushTime} from '../../../lib'
 import moment from 'moment' 
+import {useRouter} from 'next/router'
 const PrimeTable = ({ boardValue, authData }) => {
+  const router = useRouter()
   const [boardList, setBoardList] = useState([]);
   const [boardCount, setBoardCount] = useState(0);
   useEffect(() => {
@@ -23,7 +25,7 @@ const PrimeTable = ({ boardValue, authData }) => {
           }
         }
       },
-      { boardValue: boardValue, offset: 0, limit: 10 }
+      { boardValue: boardValue, offset: 0, }
     );
     return () => {
       setBoardList([]);
@@ -50,7 +52,7 @@ const PrimeTable = ({ boardValue, authData }) => {
     return <div>{row.writeData[row.writeData.useName]}</div>;
   };
   const subjectTemplate = (row) => {
-    return <Link href={`/content/view/${boardValue}/${row.id}`}>{row.subject}</Link>;
+    return <div className="w-100" onClick={()=>{router.push(`/content/view/${boardValue}/${row.id}`)}}>{row.subject}</div>;
   };
   const createTemplate = (row) => {
     return <div>{howMushTime(row.updatedAt)}</div>;
@@ -76,13 +78,15 @@ const PrimeTable = ({ boardValue, authData }) => {
   return (
     <div>
       <DataTable
+      size="small"
         value={boardList}
         paginator
-        className="p-datatable-customers"
+        tableClassName="table talbe-hover"
         // header={header}
         rows={10}
-        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-        rowsPerPageOptions={[10, 25, 50]}
+        paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+
+        rowsPerPageOptions={[10,15,30,50,100]}
         dataKey="id"
         selectionMode="checkbox"
         selection={selectedPosts}

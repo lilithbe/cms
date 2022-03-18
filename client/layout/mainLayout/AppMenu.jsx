@@ -131,13 +131,13 @@ const AppMenu = ({ authData, configData, setLogout, groupData, boardData, expand
   }
 
 
-  const menuRender = <Collapse navbar
-    className={configData.dc_navConfig.navbarButtonPosition === 'center' ? `justify-content-center` : ''}
+  const menuRender = <Collapse navbar 
+    className={configData.dc_navConfig.navbarButtonPosition === 'center' ? `justify-content-center d-none d-lg-block` : 'd-none  d-lg-block'}
     isOpen={isMobileSideMenuOpen} >
-    {configData.dc_navConfig.isNavBrand ? <a className='navbar-brand cursor-pointer' onClick={homeClickHandler} >
-      {configData.dc_isLogoImage ?
-        <Image src={configData.dc_logoImage} layout="intrinsic" width={180} height={32} alt="logo" /> :
-        configData.dc_title
+    {configData.dc_navConfig.isNavBrand ? <a className={`navbar-brand cursor-pointer ${configData.dc_navConfig.navbarFontFamily}`} onClick={homeClickHandler} >
+      {  !configData.dc_navConfig.isNavBrandText ?
+        <Image src={ configData.dc_navConfig.navbarBrand} layout="intrinsic" width={180} height={32} alt="logo" /> :
+        configData.dc_navConfig.navbarBrandText
       }
     </a> : null}
 
@@ -253,7 +253,7 @@ const [isMobileSideMenuOpen, setIsMobileSideMenuOpen] = useState(false)
   return (
     <div className='position-relative'>
       <NavBarDiv isFixed={isFixed}
-        className={`navbar navbar-expand-md d-none d-md-block ${configData.dc_navConfig.navbarPaddingY} ${configData.dc_navConfig.isScrollMovingNavFixed ? position : ''}`}
+        className={`navbar navbar-expand-md d-none d-lg-block ${configData.dc_navConfig.navbarPaddingY} ${configData.dc_navConfig.isScrollMovingNavFixed ? position : ''}`}
         navConfig={configData.dc_navConfig} >
 
         {/* <button className='navbar-toggler' onClick={toggle}><i className='navbar-toggler-icon' /></button> */}

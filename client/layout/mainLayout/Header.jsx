@@ -11,7 +11,17 @@ import { Button } from 'primereact/button';
 
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import styled from 'styled-components';
+const HeaderWrapper = styled.div`
+${(props)=>{return `background-image:url("${props.navConfig.headBackgroundImage}");`}}
+background-size:cover;
+background-repeat: no-repeat;
+${(props)=>{return `background-color:${props.navConfig.headBackgroundColor};`}}
 
+${(props)=>{return `color:${props.navConfig.headTextColor};`}}
+ 
+
+`
 const Header = ({ authData, configData, isSearch, setIsSearch }) => {
     const route = useRouter()
     const { play, style } = useAnimateKeyframes({
@@ -91,17 +101,17 @@ const Header = ({ authData, configData, isSearch, setIsSearch }) => {
 
                 </div> : null}
             {configData.dc_navConfig.isHead ?
-                <div className={`text-center py-3 d-none d-md-block `}
+                <HeaderWrapper className={`text-center py-3 d-none d-md-block ` } navConfig={configData.dc_navConfig}
                     style={style}
                 >
-                    {configData.dc_isLogoImage ?
+                    {!configData.dc_navConfig.isHeadLogoText ?
                         <Link href={"/"}>
                             <a  >
-                                <Image src={configData.dc_logoImage} width={180} height={32} alt="logo" />
+                                <Image src={configData.dc_navConfig.headLogo} width={180} height={32} alt="logo" />
                             </a></Link>
                         :
-                        <h1><Link href={"/"}>{configData.dc_title}</Link></h1>}
-                </div> : null}
+                        <h1><Link href={"/"}>{configData.dc_navConfig.headLogoText}</Link></h1>}
+                </HeaderWrapper> : null}
         </div>
     )
 }

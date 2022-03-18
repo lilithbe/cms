@@ -136,10 +136,10 @@ route.post("/write/:boardType", (req, res) => {
       req.body.contentType= req.params.boardType
       getMyAccount(writer.userId)
         .then((myAcc) => {
-          console.log(myAcc)
-          myAcc.allExp = myAcc.allExp+ writeExp;
-          myAcc.exp = myAcc.exp+ writeExp;
-          setMyAccount(myAcc)
+          setMyAccount({...myAcc,
+            allExp:myAcc.allExp+ writeExp,
+            exp: myAcc.exp+ writeExp
+          })
             .then((newMyAcc) => {
               req.body.id = v4();
               contentTable(req.body.boardName)
@@ -205,10 +205,12 @@ route.post("/write/:boardType", (req, res) => {
                 });
             })
             .catch((err) => {
+              console.log(err)
               resultFunction(res, result, false, "경험치 업데이트 실패", err);
             });
         })
         .catch((err) => {
+          console.log(err)
           resultFunction(res, result, false, "유저정보 가져오기 실패", err);
         });
     }

@@ -206,9 +206,9 @@ const PageSelect = ({ configData, boardData, groupData, value, onChange }) => {
             <div>
               <button className='btn btn-primary btn-sm' onClick={(e) => {
                 e.preventDefault()
-                onChange(`/content/view/${content.group}/${content.board}/${content.id}`)
+                onChange(`/content/view/${content.board}/${content.id}`)
               }}>적용하기</button>
-              <Link href={`/content/view/${content.group}/${content.board}/${content.id}`}>
+              <Link href={`/content/view/${content.board}/${content.id}`}>
                 <a className='btn btn-info btn-sm' target="_blank">페이지 확인</a>
               </Link>
             </div>

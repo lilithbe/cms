@@ -22,6 +22,9 @@ const Col = styled.div`
     padding-top:0;
     padding-bottom:0;
     ${(props) => props.styled}
+    @media(max-width: 991px){
+        padding-right:0;
+    }
 `
 
 const PageView = ({ pageData, authData, setPage }) => {

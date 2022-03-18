@@ -26,7 +26,7 @@ const Editor = dynamic(() => import("../../editor/WriteEditor"), { ssr: false })
 const WriteBody = ({ authData, configData, boardData, groupData, setAuthUpdate }) => {
     const router = useRouter();
     const { board } = router.query;
-    const toast = useRef(null);
+    const toast = useRef(null); 
     const isDesktop = window.innerWidth >= 992;
     const boardConfig = boardData.board_config.filter((f) => f.value === board)[0];
     const groupConfig = boardConfig.groupId==='nongroup'?boardConfig:groupData.group_config.filter((f) => f.id === boardConfig.groupId)[0];
