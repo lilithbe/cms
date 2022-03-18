@@ -59,14 +59,24 @@ const Layout = ({ children, configData,setPage, authData, boardData, socketData 
       setPathnames(pathNames)
       path=router.asPath.replace('/', '').replaceAll('/', '-')
     }
-
-    postApi(setIsLoading,GET_PAGE_DATA+path,(res)=>{
-      if (res.data.status === true) {
-        setPage(res.data.data)
-    } else {
-       
+    
+    if(path!==""){
+    
+      postApi(setIsLoading,GET_PAGE_DATA+path,(res)=>{
+        if (res.data.status === true) {
+          setPage(res.data.data)
+      } else {
+         console.log(res)
+         setPage( {  path:'',
+         className:'',
+         styled:'',
+         children:[],
+         history:[]})
+        
+      }
+      })
     }
-    })
+ 
 
     if (pathNames[1] === "admin" || pathNames[2] === "profile" || pathNames[2] === "dashboard") {
       setSideMode(true);

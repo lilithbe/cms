@@ -59,27 +59,61 @@
     }
   
 })
-route.post('/delete',(req,res)=>{
-    const reqName ='widget-update'
+route.post('/delete/:widgetId',(req,res)=>{
+    const reqName ='widget-delete'
+    const widgetId =req.params.widgetId
     try {
        const userData = jwt.verify(
            req.headers.authorization,
            process.env.SECRET_KEY
          ); //토큰검증및 유저정보
            if(userData){
-            Table('widget').destroy({
+            Table('page').update(req.body,{
                 where: {
                     id: {
-                      [Op.eq]:req.body.id,
+                      [Op.eq]:req.body.id
                     },
                   }, 
             })
-            .then(() => {
-                res.status(200).json({ reqName:reqName,status: true }) 
+            .then((data) => {
+                Table('widget').findOne({
+                    where: {
+                        id: {
+                          [Op.eq]:widgetId
+                        },
+                      }, 
+                })
+                .then((widget) => {
+                    if(widget){
+                        Table('widget').destroy({
+                            where: {
+                                id: {
+                                  [Op.eq]:widgetId
+                                },
+                              }, 
+                        })
+                        .then(() => {
+                            console.log('위젯 삭제')
+                            res.status(200).json({ reqName:'page_set_data',status: true }) 
+                        })
+                        .catch((err) => {
+                            res.status(200).json({ reqName:reqName,status: false, error: err })  
+                        })
+                    }else{
+                        console.log('페이지 데이터만 수정')
+                        res.status(200).json({ reqName:'page_set_data',status: true }) 
+                    }
+                    
+                })
+                .catch((err) => {
+                    res.status(200).json({ reqName:reqName,status: false, error: err })  
+                })
             })
             .catch((err) => {
-                res.status(200).json({ reqName:reqName,status: false, error: err })  
+                res.status(200).json({ reqName:'page_set_data',status: false, error: err,message:'' })  
             })
+
+            
            }else{
                res.status(200).json({ reqName:reqName,status: false, error: '' })
            }
@@ -93,6 +127,7 @@ route.post('/delete',(req,res)=>{
 route.post('/set_data/:widgetId',(req,res)=>{
     const reqName ='set_widget'
     const widgetId =req.params.widgetId
+    console.log(reqName)
     try {
         Table('widget').findOne({
             where: {
@@ -153,7 +188,25 @@ route.post('/get_data/:widgetId',(req,res)=>{
             if(data){
                 res.status(200).json({ reqName:reqName,status: true, data: data.dataValues })
             }else{
-                res.status(200).json({ reqName:reqName,status: false, message: '해당위젯이 존재하지 않습니다.' }) 
+
+                const createData = {
+                    id: widgetId,
+                    label: '',
+                    viewGrade: 0,
+                    component: '',
+                    data: {},
+                    options: {},
+                    styled: '',
+                    className: ''
+                }
+
+                Table('widget').create(createData)
+                .then((newData) => {
+                    res.status(200).json({ reqName:reqName,status: true, data: newData.dataValues })
+                })
+                .catch((err) => {
+                    res.status(200).json({ reqName:reqName,status: false, error: err })
+                })
             }
         })
         .catch((err) => {

@@ -9,8 +9,25 @@ import { LIST } from '../../../common';
 import ColorSelecter from '../../formControl/ColorSelecter';
 import { InputText } from 'primereact/inputtext';
 import classNames from 'classnames';
+import styled from 'styled-components';
+import {useRouter} from 'next/router'
+import JsonView from '../../admin/jsonView/JsonView';
+const SimpleBoardListWrapper = styled.div`
+
+.p-datatable-header{
+  background-color:${props=>props.options.titleBgColor};
+  color:${props=>props.options.titleFontColor};
+}
+.p-datatable-table{
+
+}
+td{
+
+}
+`
 
 const SimpleBoardList = ({ data }) => {
+  const router =useRouter()
   const [isLoading, setIsLoading] = useState(false);
   const [boardList, setBoardList] = useState([]);
   const [boardCount, setBoardCount] = useState(0);
@@ -36,25 +53,22 @@ const SimpleBoardList = ({ data }) => {
       setBoardCount(0);
     };
   }, [data.options]);
-  const cardHeaderClass=classNames(`card-header`)
+  const headerTemplate = <div className='d-flex justify-content-between'>
+   <div className='pl-2'>{ data.options.title}</div>
+   <div className='pr-2 cursor-pointer' onClick={()=>{
+     router.push(`/content/list/${data.options.boardValue}`)//boardValue
+   }}>moer +</div>
+  </div>
+// /content/view/freeboard/${row.id}
   return (
-    <div className='card' style={{
-      backgroundColor:data.options.cardBgColor,
-      color:data.options.cardFontColor,
-    }}>
-      <div className={cardHeaderClass} style={{
-      backgroundColor:data.options.cardHeaderBgColor,
-      color:data.options.cardHeaderFontColor,
-    }}>{data.options.cardTitle}</div>
-      <div className='card-body p-0' style={{
-      backgroundColor:data.options.cardBodyBgColor,
-      color:data.options.cardBodyFontColor,
-    }}>
-        <DataTable value={boardList} size="small" emptyMessage="This article does not exist." responsiveLayout="scroll">
-          <Column field="subject" body={(row,col)=><div>{row.subject.substring(0, data.options.subjectLimitCount) }{row.subject.length>data.options.subjectLimitCount?'...':null}</div>} header="subject"></Column>
-        </DataTable>
-      </div>
-    </div>
+    <SimpleBoardListWrapper options={data.options}>
+      <DataTable header={headerTemplate} className='border border-top-0' value={boardList} size="small" emptyMessage="This article does not exist." responsiveLayout="scroll">
+        <Column field="subject" body={(row, col) => <div style={{cursor:'pointer'}} onClick={()=>{
+           router.push(` /content/view/${data.options.boardValue}/${row.id}`)//boardValue
+        }}>{row.subject.substring(0, data.options.subjectLimitCount)}{row.subject.length > data.options.subjectLimitCount ? '...' : null}</div>} header="subject"></Column>
+      </DataTable>
+     
+    </SimpleBoardListWrapper>
   )
 }
 const mapStateToProps = (state) => {
@@ -74,7 +88,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(SimpleBoardList)
 export const SimpleBoardListSetting = ({ widget, onChange, widgetObject }) => {
   return (
     <div className='card' style={{ minWidth: "800px" }}>
-      <DataTable value={widgetObject.settingOptions} size="small" responsiveLayout="scroll">
+       <DataTable value={widgetObject.settingOptions} size="small" responsiveLayout="scroll">
         <Column field="label" header="label" />
         <Column bodyClassName='p-0' body={(row, key) => {
           switch (row.inputType) {
@@ -154,6 +168,7 @@ export const SimpleBoardListSetting = ({ widget, onChange, widgetObject }) => {
         }} header="label" />
         <Column field="description" header="Description" />
       </DataTable>
+    
     </div>
   )
 }

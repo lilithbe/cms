@@ -3,7 +3,7 @@ import { TabView, TabPanel } from 'primereact/tabview';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { widgetList } from './widgetObject';
-const WidgetSetting = ({ widget, onChange, widgetComponent }) => {
+const WidgetSetting = ({ widget, onChange, widgetComponent, pageId,sectionId,colId }) => {
     return (
         <div style={{minWidth:"800px"}}>
             <TabView>
@@ -26,7 +26,7 @@ const WidgetSetting = ({ widget, onChange, widgetComponent }) => {
                 }} />
             </TabPanel>
             <TabPanel header={`${widget.label} Setting`}>
-                {widgetComponent.setting(widget,onChange,widgetComponent)}
+                {widgetComponent.setting(widget,onChange,widgetComponent, pageId,sectionId,colId)}
             </TabPanel>
         </TabView>
         </div>

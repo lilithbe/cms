@@ -10,8 +10,13 @@ import { widgetList } from './widgetObject'
 import WidgetSetting from './WidgetSetting'
 import { SpeedDial } from 'primereact/speeddial';
 import { Dialog } from 'primereact/dialog'
+import { confirmDialog } from 'primereact/confirmdialog';
+import JsonView from '../admin/jsonView/JsonView'
 const WidgetDiv = styled.div`
-  ${(props) => props.isAdminMode ? 'min-height:300px;' : null}
+  .isAdminMode{
+    ${(props) => props.isAdminMode ? 'min-height:100px;' : null}
+  }
+ 
   position:relative;
   .p-speeddial{
     z-index:2;
@@ -23,8 +28,9 @@ const WidgetDiv = styled.div`
       height:2.3rem;
   }
 `
-const WidgetView = ({ authData, widget }) => {
+const WidgetView = ({ authData, widget ,deleteWidget }) => {
   const toast = useRef()
+  const [isDeleteCheck, setIsDeleteCheck] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isWidgetSettingOpen, setIsWidgetSettingOpen] = useState(false)
   const [widgetState, setWidgetState] = useState({
@@ -32,7 +38,7 @@ const WidgetView = ({ authData, widget }) => {
     label: '',
     viewGrade: 0,
     component: '',
-    data: {},
+    data: [],
     options: {},
     styled: '',
     className: '',
@@ -52,6 +58,7 @@ const WidgetView = ({ authData, widget }) => {
       }
     })
   }, [widget.id])
+
   useEffect(() => {
     if (widgetList.findIndex(f => f.value === widgetState.component) !== -1) {
       setWidgetComponent(widgetList.filter(f => f.value === widgetState.component)[0])
@@ -69,19 +76,33 @@ const WidgetView = ({ authData, widget }) => {
   const footerTemplate = () => {
     return (
       <div>
-        <Button label="저장" className='p-button-sm' onClick={() => {
+          <JsonView json={widgetState}/>
+           <Button label="삭제" icon="bi bi-trash" className='p-button-sm p-button-danger' onClick={deleteWidgetHandler} />
+
+        <Button label="저장" icon="bi bi-save" className='p-button-sm' onClick={() => {
           postApi(setIsLoading, SET_WIDGET_DATA + widget.id, (res) => {
             if (res.data.status) {
               toast.current.show({ severity: 'success', summary: 'Success Message', detail: 'Save Success' });
+              setIsWidgetSettingOpen(false)
             } else {
               toast.current.show({ severity: 'error', summary: 'Error Message', detail: 'Save Error' });
             }
-          }, widgetState)
+           
+          }, widgetState,authData.userToken)
         }} />
       </div>
     )
   }
-
+  const deleteWidgetHandler = () => {
+    confirmDialog({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptClassName: 'p-button-danger',
+      accept: () => deleteWidget(),
+      reject: () => { }
+    })
+  }
 
 
 
@@ -94,28 +115,30 @@ const WidgetView = ({ authData, widget }) => {
       }
     },
     {
-      label: 'Update',
+      label: 'Delete Widget',
       icon: 'bi bi-trash',
       command: () => {
-
+        deleteWidgetHandler()
       }
     },
   ];
 
   return (
     <WidgetDiv isAdminMode={authData.isAdminMode}>
+        <div className='isAdminMode'/>
       {widgetComponent.component({
         data: widgetState
       })}
-
+    
 
       <Dialog blockScroll={true} header="Widget Setting" visible={isWidgetSettingOpen} onHide={() => {
         setIsWidgetSettingOpen(false)
       }} footer={footerTemplate}>
-        <WidgetSetting widget={widgetState} onChange={setWidgetState} widgetComponent={widgetComponent} />
+      
+        <WidgetSetting widget={widgetState} onChange={setWidgetState} widgetComponent={widgetComponent}  />
       </Dialog>
 
-      {authData.isAdminMode ? <SpeedDial model={items} direction="left" mask /> : null}
+      {authData.isAdminMode ? <SpeedDial model={items} direction="left"  /> : null}
 
       <Toast ref={toast} />
     </WidgetDiv>

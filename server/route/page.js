@@ -9,7 +9,6 @@
  const route = express.Router();
  route.post('/create',(req,res)=>{
      const reqName ='page-create'
-     console.log(reqName)
      try {
         const userData = jwt.verify(
             req.headers.authorization,
@@ -36,8 +35,6 @@
  })
  route.post('/update',(req,res)=>{
      const reqName ='page-update'
-     console.log(reqName)
-    console.log(req.body)
     try {
        const userData = jwt.verify(
            req.headers.authorization,
@@ -70,7 +67,6 @@
 })
 route.post('/delete',(req,res)=>{
     const reqName ='page-delete'
-    console.log(reqName)
     try {
        const userData = jwt.verify(
            req.headers.authorization,
@@ -101,7 +97,6 @@ route.post('/delete',(req,res)=>{
   
 })
  route.post('/get_data/:path',(req,res)=>{
-    console.log('page_get_data :',req.params.path)
     try {
           Table('page').findOne({
             where: {
@@ -111,7 +106,6 @@ route.post('/delete',(req,res)=>{
               }, 
         })
         .then((data) => {
-            console.log(data)
             if(data){
                 res.status(200).json({ reqName:'page_get_data',status: true, data: data.dataValues }) 
             }else{
@@ -133,7 +127,6 @@ route.post('/delete',(req,res)=>{
 
 
 route.post('/set_data/:path',(req,res)=>{
-    console.log('page_set_data :',req.params.path,req.body)
  
     try {
           Table('page').findOne({
@@ -152,9 +145,36 @@ route.post('/set_data/:path',(req,res)=>{
                         },
                       }, 
                 })
-                .then((data) => {
-                    console.log('update')
-                    res.status(200).json({ reqName:'page_set_data',status: true, data: data.dataValues }) 
+                .then( (data) => {
+                    const saveDelete = async (newWidget,deleteWidget)=>{
+                        await newWidget.forEach(async(element,i) => {
+                           await Table('widget').create({  id: element,
+                            label: '',
+                            viewGrade: 0,
+                            component: '',
+                            data: [],
+                            options: {},
+                            styled: '',
+                            className: '',}).then(()=>{
+                            console.log(i)
+                        })
+                        });
+                        await deleteWidget.forEach(async(element,i) => {
+                            await Table('widget').destroy({
+                                where: {
+                                    id: {
+                                    [Op.eq]:element
+                                  },
+                                 },
+                            }).then(()=>{
+                                console.log(i)
+                            })
+                        });
+                    }
+                    saveDelete(req.body.newWidget,req.body.deleteWidget).then(()=>{
+                        console.log('완료')
+                        res.status(200).json({ reqName:'page_set_data',status: true, data: data.dataValues }) 
+                    })
                 })
                 .catch((err) => {
                     res.status(200).json({ reqName:'page_set_data',status: false, error: err,message:'' })  
@@ -163,8 +183,35 @@ route.post('/set_data/:path',(req,res)=>{
                 req.body.id=v4()
                 Table('page').create(req.body,)
                 .then((data) => {
-                    console.log('create' , data)
-                    res.status(200).json({ reqName:'page_set_data',status: true, data: data.dataValues }) 
+                    const saveDelete = async (newWidget,deleteWidget)=>{
+                        await newWidget.forEach(async(element,i) => {
+                            await Table('widget').create({  id: element,
+                             label: '',
+                             viewGrade: 0,
+                             component: '',
+                             data: [],
+                             options: {},
+                             styled: '',
+                             className: '',}).then(()=>{
+                             console.log(i)
+                         })
+                         });
+                         await deleteWidget.forEach(async(element,i) => {
+                             await Table('widget').destroy({
+                                 where: {
+                                     id: {
+                                     [Op.eq]:element
+                                   },
+                                  },
+                             }).then(()=>{
+                                 console.log(i)
+                             })
+                         });
+                     }
+                     saveDelete(req.body.newWidget,req.body.deleteWidget).then(()=>{
+                         console.log('완료')
+                         res.status(200).json({ reqName:'page_set_data',status: true, data: data.dataValues }) 
+                     })
                 })
                 .catch((err) => {
                     res.status(200).json({ reqName:'page_set_data',status: false, error: err,message:'' })  

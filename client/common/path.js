@@ -144,3 +144,4 @@ export const SET_PAGE_DATA = `${page}/set_data/` //:path
 const widget =`${API}/widget`
 export const GET_WIDGET_DATA = `${widget}/get_data/` //:widget id
 export const SET_WIDGET_DATA = `${widget}/set_data/` //:widget id
+export const DELETE_WIDGET = `${widget}/delete/` //:widget id

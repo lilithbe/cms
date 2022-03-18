@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from "react-redux";
 import { setConfig } from '../../../redux';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { Toast } from 'primereact/toast';
 import styled from 'styled-components';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
@@ -33,15 +32,19 @@ import FontFamilyDropdwon from '../../formControl/FontFamilyDropdwon';
 const NavgationSettingWrapper = styled.div`
    
 `
-const NavgationSetting = ({ configData, setConfig, authData }) => {
-    const toast = useRef(null);
+const NavgationSetting = ({ configData, setConfig, authData,onHide,toast }) => {
+
     const [isLoading, setIsLoading] = useState(false)
     const updateHandler = (value) => {
         setConfig(value)
     }
     const saveHandler = () => {
         postApi(setIsLoading, ADMIN_CONFIG_UPDATE, (res) => {
-            console.log(res)
+        
+            if(res.data.status){
+                onHide()
+                toast.current.show({ severity: 'success', summary: 'Save Success', detail: '네비게이션 데이터 저장 완료' });
+            }
         }, { dc_navConfig: configData.dc_navConfig, dc_navgation: configData.dc_navgation }, authData.userToken)
     }
     return (
@@ -68,7 +71,7 @@ const NavgationSetting = ({ configData, setConfig, authData }) => {
                 </TabPanel>
             </TabView>
             <Button label="Save" icon="pi pi-save" className='py-1' onClick={saveHandler} />
-            <Toast ref={toast} />
+     
         </NavgationSettingWrapper>
     )
 }
@@ -250,7 +253,7 @@ const OptionSettingTemplate = ({ isLoading, arr, navConfig, callback }) => {
                                     value={navConfig[row.key]}
                                     className='p-inputtext-sm'
                                     onChange={(e) => {
-                                        callback({ ...navConfig, [row.key]: e.value })
+                                        callback({ ...navConfig, [row.key]: e.target.value })
                                     }} />
                             )
                         case 'color':
@@ -266,7 +269,7 @@ const OptionSettingTemplate = ({ isLoading, arr, navConfig, callback }) => {
                                 <FileUpload fileType='image'
                                     callback={(res) => {
                                         console.log(res.data.result)
-                                        // callback({...navConfig,[row.key]:url})
+                                        callback({...navConfig,[row.key]:res.data.result.src})
                                     }} />
                             )
                         case 'fontsize':

@@ -136,17 +136,15 @@ route.post("/write/:boardType", (req, res) => {
       req.body.contentType= req.params.boardType
       getMyAccount(writer.userId)
         .then((myAcc) => {
-          myAcc.allExp += writeExp;
-          myAcc.exp += writeExp;
           console.log(myAcc)
+          myAcc.allExp = myAcc.allExp+ writeExp;
+          myAcc.exp = myAcc.exp+ writeExp;
           setMyAccount(myAcc)
             .then((newMyAcc) => {
               req.body.id = v4();
               contentTable(req.body.boardName)
                 .create(req.body)
                 .then((data) => {
-
-                
                   Table("log_file")
                     .findAll({
                       where: {
@@ -163,8 +161,6 @@ route.post("/write/:boardType", (req, res) => {
                       attributes: ["key", "isSave"]
                     })
                     .then((files) => {
-                      
-                     
                       const update = async () => {
                         if(files.length>0){
                           files.forEach((file, index) => {

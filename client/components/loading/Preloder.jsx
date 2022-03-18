@@ -8,7 +8,7 @@ const Preloder = ({isLoading ,isData , children}) => {
         if(isData===true && isLoading===false ){
             setInterval(() => {
                 setIsStart(true)
-            }, 1000);
+            }, 100);
         }
         return()=>{
             setIsStart(false)

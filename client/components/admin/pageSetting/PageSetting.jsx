@@ -15,18 +15,20 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from 'primereact/inputtextarea';
 import dynamic from 'next/dynamic'
+import JsonView from "../jsonView/JsonView";
 
 const SimpleCodeEditor = dynamic(() => import('../../codemirror/SimpleCodeEditor'))
 
 
-const PageSetting = ({authData, setPage }) => {
+const PageSetting = ({ authData, setPage,onHide,toast }) => {
     const router = useRouter()
-    const toast = useRef(null)
+  
     const [path, setPath] = useState('main')
     const [isLoading, setIsLoading] = useState(false)
     const [pageData, setPageData] = useState({
         path: '',
         children: [],
+        widgetIds:[],
         className: '',
         styled: '',
         history: [],
@@ -59,63 +61,91 @@ const PageSetting = ({authData, setPage }) => {
             if (res.data.status === true) {
                 setPageData(res.data.data)
             } else {
-                toast.current.show({ severity: 'info', summary: 'None Page Data', detail: res.data.message });
+                toast.current.show({ severity: 'warn', summary: 'None Page Data', detail: res.data.message });
             }
         })
-    }, [router.asPath]);
+    }, [router.asPath, toast]);
 
-    useEffect(() => {
-        console.log(pageData)
-    }, [pageData])
+
 
     const [activeIndex, setActiveIndex] = useState(0)
+    const [isSave, setIsSave] = useState(false)
 
     const childrenChangeHandler = (values) => {
         setPageData({
             ...pageData,
             children: values
         })
+        setIsSave(false)
     }
-    const saveHandler = () => { 
-        postApi(setIsLoading ,SET_PAGE_DATA+path,(res)=>{
-            if(res.data.status){
-                toast.current.show({ severity: 'primary', summary: 'Save Success', detail: '페이지 데이터 저장 완료' });
+    const saveHandler = () => {
+
+        const _new = newWidget.filter(x => !deleteWidget.includes(x))
+        const _delete = deleteWidget.filter(x => !newWidget.includes(x))
+        postApi(setIsLoading, SET_PAGE_DATA + path, (res) => {
+            if (res.data.status) {
+                setIsSave(true)
+                setDeleteWidget([])
+                setNewWidget([])
+                onHide()
+                toast.current.show({ severity: 'success', summary: 'Save Success', detail: '페이지 데이터 저장 완료' });
                 setPage(pageData)
             }
-        },pageData,authData.userToken )
-     }
+        }, {...pageData,deleteWidget:_delete,newWidget:_new}, authData.userToken)
+    }
+    const [deleteWidget, setDeleteWidget] = useState([])
+    const [newWidget, setNewWidget] = useState([])
+    const deleteWidgetHandler = (ids) => { setDeleteWidget([...deleteWidget,...ids]) }
+    const addWidgetHandler=(id) => { setNewWidget([...newWidget,id]) }
+
+
     return (
         <div className="card p-0" style={{ width: "100%" }}>
             <div className="card-body p-0" >
                 <TabView activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
                     <TabPanel header="Page Object Setting">
-                    <TableTemplate  value={pageData.children} loading={isLoading} onChange={childrenChangeHandler} type="Section"/>
+                        <TableTemplate value={pageData.children} loading={isLoading} onChange={childrenChangeHandler} type="Section"addWidget={addWidgetHandler} widgetDelete={deleteWidgetHandler}/>
                     </TabPanel>
                     <TabPanel header="Page Style Setting">
-                       <StyleTemplate value={pageData} onChange={setPageData}/>
+                        <StyleTemplate value={pageData} onChange={setPageData} />
                     </TabPanel>
                 </TabView>
             </div>
 
             <div className={`card-footer d-flex justify-content-${activeIndex === 0 ? 'between' : 'end'} p-0`} >
-                {activeIndex === 0 ?
-                    <Button label="section add" className="p-button-sm" onClick={() => {
-                        setPageData({
-                            ...pageData,
-                            children: [...pageData.children, {
-                                type: 'section',
-                                className: '',
-                                styled: '',
-                                children: [],
-                                id: uuidv4()
-                            }]
-                        })
-                    }} /> : null}
+                <div className="btn-group">
+                    {activeIndex === 0 ?
+                        <Button label="section add" className="p-button-sm" onClick={() => {
+                            setPageData({
+                                ...pageData,
+                                children: [...pageData.children, {
+                                    type: 'section',
+                                  
+                                    className: '',
+                                    styled: '',
 
-                <Button label="저장" className="p-button-sm" onClick={saveHandler}/>
+                                    children: [],
+                                    id: uuidv4(),
+
+
+                                    isBackgroundImage:false,
+                                    backgroundImage:'',
+                                    backgroundPosition:'',
+                                    backgroundColor:'#00000000',
+
+                                }]
+                            })
+                        }} /> : null}
+
+
+                
+                         <JsonView json={pageData} title="Page Object Open"/>
+
+                </div>
+                <Button label="저장" className="p-button-sm" onClick={saveHandler} />
             </div>
 
-            <Toast ref={toast} />
+
         </div>
     )
 }
@@ -139,99 +169,132 @@ export default connect(mapStateToProps, mapDispatchToProps)(PageSetting);
 
 
 
-const TableTemplate = ({ value, loading, onChange , type }) => {
+const TableTemplate = ({ value, loading, onChange, type , widgetDelete , addWidget}) => {
     const onRowReorder = (e) => {
         onChange(e.value);
     }
-    const childrenType=`${type==='Section'?'Col':type==='Col'?'Widget':'Widget'}`
+    const childrenType = `${type === 'Section' ? 'Col' : type === 'Col' ? 'Widget' : ''}`
 
     return (
-        <div className="card" style={{minWidth:"800px"}}>
+        <div className="card" style={{ minWidth: "800px" }}>
             <div className="card-body p-0">
-            <DataTable
-            value={value}
-            size="small"
-            dataKey="id"
-            rowHover
-            loading={loading}
-            responsiveLayout="scroll"
-            emptyMessage={`No ${type} found.`}
-            // reorderableColumns
-            onRowReorder={onRowReorder}
-        >
-            <Column rowReorder rowReorderIcon="bi bi-arrows-move" style={{ width: '3em' }} />
-            {type !== 'Widget' ?  <Column 
-                    bodyClassName="p-0" 
-                    body={(row, col) => {
-                    return <SettingDialog
-                        type={type}
-                        childrenType={childrenType.toLowerCase()}
-                        row={row}
-                        col={col}
-                        value={value}
-                        onChange={onChange}>
-                        <TableTemplate
-                            type={childrenType}
-                            value={row.children}
-                            loading={loading}
-                            onChange={(data) => {
-                                const result = Array.from(value)
-                                result.splice(col.rowIndex, 1, { ...row, children: data })
-                                onChange(result);
-                            }} />
-                    </SettingDialog>
-                }} /> : null}
-       
-            <Column field="type" header="Type" />
+                <DataTable
+                    value={value}
+                    size="small"
+                    dataKey="id"
+                    rowHover
+                    loading={loading}
+                    responsiveLayout="scroll"
+                    emptyMessage={`No ${type} found.`}
+                    // reorderableColumns
+                    onRowReorder={onRowReorder}
+                >
+                    <Column rowReorder rowReorderIcon="bi bi-arrows-move" style={{ width: '3em' }} />
+                    {type !== 'Widget' ? <Column
+                        bodyClassName="p-0"
+                        body={(row, col) => {
+                            return <SettingDialog
+                                type={type}
+                                childrenType={childrenType.toLowerCase()}
+                                row={row}
+                                col={col}
+                                value={value}
+                                addWidget={addWidget}
+                                onChange={onChange}>
+                                <TableTemplate
+                                    type={childrenType}
+                                    value={row.children}
+                                    loading={loading}
+                                    widgetDelete={widgetDelete}
+                                    addWidget={addWidget}
+                                    onChange={(data) => {
+                                        const result = Array.from(value)
+                                        result.splice(col.rowIndex, 1, { ...row, children: data })
+                                        onChange(result);
+                                    }} />
+                            </SettingDialog>
+                        }} /> : null}
 
-            <Column body={(row) => row.children.length} header="Children Count" />
-            <Column bodyClassName="p-0" header="Editor" body={(row, col) => {
-                return (
-                    <div>
-                        {childrenType!=='Widget'?
-                        <Button icon="bi-plus" className="p-button-sm p-button-info" onClick={() => {
-                            const result = Array.from(value)
-                            result.splice(col.rowIndex, 1, {
-                                ...row, 
-                                children: [...row.children, {
-                                    type: childrenType.toLowerCase(),
-                                    className: childrenType.toLowerCase(),
-                                    styled: '',
-                                    children: [],
-                                    id: uuidv4()
-                                }]
-                            })
-                            onChange(result)
-                        }} />:null}
+                    <Column field="type" header="Type" />
 
-                        {type !== 'Widget' ?
-                            <StyleDialog 
-                            type={type}
-                            value={row} 
-                            onChange={(data)=>{
-                                const result = Array.from(value)
-                                result.splice(col.rowIndex, 1, data)
-                                onChange(result)
-                           }}
-                           /> : null}
+                    <Column body={(row) => row.children.length} header="Children Count" />
+                    <Column bodyClassName="p-0" header="Editor" body={(row, col) => {
+                        return (
+                            <div>
+                                {childrenType!==''?
+                                <Button icon="bi-plus" className="p-button-sm p-button-info" onClick={() => {
+                                        const result = Array.from(value)
+                                        const getId= uuidv4()
+                                        result.splice(col.rowIndex, 1, {
+                                            ...row,
+                                            children: [...row.children, {
+                                                type: childrenType.toLowerCase(),
+                                                className: childrenType === 'Col'?'col-md-12 col-lg-12':childrenType.toLowerCase(),
+                                                styled: '',
+                                                children: [],
+                                                id: getId,
+
+                                                isBackgroundImage:false,
+                                                backgroundImage:'',
+                                                backgroundPosition:'',
+                                                backgroundColor:'#00000000',
+                                            }]
+                                        })
+                                        onChange(result)
+                                        console.log(row.type)
+                                        if(row.type==='col'){
+                                            addWidget(getId)
+                                        }
+                                    }} />:null}
+
+                                {type !== 'Widget' ?
+                                    <StyleDialog
+                                        type={type}
+                                        value={row}
+                                        onChange={(data) => {
+                                            const result = Array.from(value)
+                                            result.splice(col.rowIndex, 1, data)
+                                            onChange(result)
+                                           
+                                        }}
+                                    /> : null}
 
 
-                        <Button icon="bi-trash" className="p-button-sm p-button-danger" onClick={() => {
-                            const result = Array.from(value)
-                            result.splice(col.rowIndex, 1)
-                            onChange(result)
-                        }} />
-                    </div>
-                )
-            }} />
-        </DataTable>
+                                <Button icon="bi-trash" className="p-button-sm p-button-danger" onClick={() => {
+                                    const result = Array.from(value)
+                                    result.splice(col.rowIndex, 1)
+                                    onChange(result)
+                                    const newarr=[]
+                                    if (row.type === 'widget') {
+                                        widgetDelete([row.id])
+                                    } else if (row.type === 'col') {
+                                        for (let i = 0; i < row.children.length; i++) {
+                                            newarr.push(row.children[i].id)
+                                        }
+                                        widgetDelete(newarr)
+                                    } else if (row.type === 'section') {
+                                        for (let i = 0; i < row.children.length; i++) {
+                                            const Section = row.children[i]
+                                            for (let j = 0; j < Section.children.length; j++) {
+                                                newarr.push(Section.children[j].id)
+                                            }
+                                        }
+                                        widgetDelete(newarr)
+                                    } 
+                                
+                                }} />
+                                   <JsonView json={row} title={``}/>
+                            </div>
+                        )
+                    }} />
+                </DataTable>
             </div>
         </div>
     )
 }
 
 
-const SettingDialog = ({ children, type, childrenType, row, col, value, onChange }) => {
+const SettingDialog = ({ children, type, childrenType, row, col, value, onChange,addWidget }) => {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <div>
@@ -241,16 +304,25 @@ const SettingDialog = ({ children, type, childrenType, row, col, value, onChange
                     return (
                         <Button icon="bi-plus" className="p-button-sm p-button-info" onClick={() => {
                             const result = Array.from(value)
+                            const uuid =  uuidv4()
                             result.splice(col.rowIndex, 1, {
                                 ...row, children: [...row.children, {
                                     type: childrenType.toLowerCase(),
-                                    className: type.toLowerCase(),
+                                    className: childrenType === 'col'?'col-md-12 col-lg-12':childrenType.toLowerCase(),
                                     styled: '',
                                     children: [],
-                                    id: uuidv4()
+                                    id:uuid,
+
+                                    isBackgroundImage:false,
+                                    backgroundImage:'',
+                                    backgroundPosition:'',
+                                    backgroundColor:'#00000000',
                                 }]
                             })
                             onChange(result)
+                            if(childrenType==='widget'){
+                                addWidget(uuid)
+                            }
                         }} />
                     )
                 } else {
@@ -263,49 +335,49 @@ const SettingDialog = ({ children, type, childrenType, row, col, value, onChange
     )
 }
 
-const StyleDialog = ({ children, type , value, onChange }) => {
+const StyleDialog = ({ children, type, value, onChange }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [codeState, setCodeState] = useState('')
     return (
         <>
-            <Button tooltip={`${type} Style Changer`} tooltipOptions={{position:'bottom'}} icon="bi bi-braces" className="p-button-sm" onClick={() => { setIsOpen(true) }} />
-            <Dialog dismissableMask header={`${type} Style Setting`} visible={isOpen} onHide={() => { setIsOpen(false) }} footer={<Button label="Close" className="p-button-sm" onClick={() => { setIsOpen(false) }}/>}>
-            <div className="card" style={{minWidth:"700px"}}>
-            <div className="card-header">
-                    Class
-                </div>
-                <div className="card-body p-0">
-                    <InputText
-                        className="p-inputtext-sm w-100"
-                        value={value.className}
-                        onChange={(e) => {
-                            onChange({
-                                ...value,
-                                className:e.target.value
-                            })
-                        }} 
-                        autoFocus
+            <Button tooltip={`${type} Style Changer`} tooltipOptions={{ position: 'bottom' }} icon="bi bi-braces" className="p-button-sm" onClick={() => { setIsOpen(true) }} />
+            <Dialog dismissableMask header={`${type} Style Setting`} visible={isOpen} onHide={() => { setIsOpen(false) }} footer={<Button label="Close" className="p-button-sm" onClick={() => { setIsOpen(false) }} />}>
+                <div className="card" style={{ minWidth: "700px" }}>
+                    <div className="card-header">
+                        Class
+                    </div>
+                    <div className="card-body p-0">
+                        <InputText
+                            className="p-inputtext-sm w-100"
+                            value={value.className}
+                            onChange={(e) => {
+                                onChange({
+                                    ...value,
+                                    className: e.target.value
+                                })
+                            }}
+                            autoFocus
                         />
+                    </div>
+                    <div className="card-header">
+                        Styled
+                    </div>
+                    <div className="card-body p-0">
+
+                        <InputTextarea
+                            className="w-100"
+                            rows={10}
+                            cols={30}
+                            autoResize
+                            value={value.styled}
+                            onChange={(e) => {
+                                onChange({
+                                    ...value,
+                                    styled: e.target.value
+                                })
+                            }} />
+                    </div>
                 </div>
-                <div className="card-header">
-                Styled
-                </div>
-                <div className="card-body p-0">
-              
-                      <InputTextarea
-                        className="w-100"
-                        rows={10}
-                        cols={30}
-                        autoResize 
-                        value={value.styled}
-                        onChange={(e) => {
-                            onChange({
-                                ...value,
-                                styled: e.target.value
-                            })
-                        }} />
-                </div>
-            </div>
             </Dialog>
         </>
     )
@@ -314,8 +386,8 @@ const StyleDialog = ({ children, type , value, onChange }) => {
 const StyleTemplate = ({ value, onChange }) => {
     return (
         <div>
-            <div className="card" style={{minWidth:"700px"}}>
-            <div className="card-header">
+            <div className="card" style={{ minWidth: "700px" }}>
+                <div className="card-header">
                     Class
                 </div>
                 <div className="card-body p-0">
@@ -325,14 +397,14 @@ const StyleTemplate = ({ value, onChange }) => {
                         onChange={(e) => {
                             onChange({
                                 ...value,
-                                className:e.target.value
+                                className: e.target.value
                             })
-                        }} 
+                        }}
                         autoFocus
-                        />
+                    />
                 </div>
                 <div className="card-header">
-                Styled
+                    Styled
                 </div>
                 <div className="card-body p-0">
                     <SimpleCodeEditor

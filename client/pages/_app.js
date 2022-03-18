@@ -39,8 +39,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <Provider store={store}>   
-      <Script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></Script>
+
       <ReduxDataSet>
+      <Script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></Script>
         <Layout themeColor={themeColor} themeScheme={themeScheme} setThemeColor={setThemeColor} setThemeScheme={setThemeScheme}>
           <NextNProgress />
           <Component {...pageProps}  />

@@ -37,11 +37,14 @@ export const postApi = (loadingFunction,api_address,callback,data,token,request)
         request:request||null
     }
     aixosFetch(requestData, loadingFunction, (res) => {
+      loadingFunction(true)
     if(res.status===200){
+      loadingFunction(false)
       callback({
         data:res.data,
       })
     }else{
+      loadingFunction(false)
       callback({
         error:true,
       })
