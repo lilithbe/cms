@@ -13,15 +13,14 @@ import { Dialog } from 'primereact/dialog'
 import { confirmDialog } from 'primereact/confirmdialog';
 import JsonView from '../admin/jsonView/JsonView'
 const WidgetDiv = styled.div`
-  .isAdminMode{
-    ${(props) => props.isAdminMode ? 'min-height:100px;' : null}
-  }
- 
+
+min-height:100px;
+
   position:relative;
   .p-speeddial{
     z-index:2;
-    top:20px;
-    right:20px;
+    top:50px;
+    right:50px;
   }
   .p-speeddial-button.p-button{
       width:2.3rem;
@@ -138,7 +137,7 @@ const WidgetView = ({ authData, widget ,deleteWidget }) => {
         <WidgetSetting widget={widgetState} onChange={setWidgetState} widgetComponent={widgetComponent}  />
       </Dialog>
 
-      {authData.isAdminMode ? <SpeedDial model={items} direction="left"  /> : null}
+      {authData.isAdminMode ? <SpeedDial model={items}className="d-none d-lg-block" direction="left"  /> : null}
 
       <Toast ref={toast} />
     </WidgetDiv>

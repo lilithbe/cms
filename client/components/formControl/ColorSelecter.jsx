@@ -10,11 +10,14 @@ const ColorPicker = dynamic(async () => {
     }
 },
     { ssr: false })
-const ColorSelecter = ({color,callback}) => {
+const ColorSelecter = ({color,callback ,buttonClassName,tooltip,tooltipOptions}) => {
     const op = useRef(null);
   return (
     <div>
-    <Button className="p-button-sm"
+    <Button 
+    tooltip={tooltip}
+    tooltipOptions={tooltipOptions}
+     className={`${buttonClassName} p-button-sm`}
         icon={"bi bi-color"}
         style={{ backgroundColor: color }}
         onClick={(e) => {

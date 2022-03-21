@@ -18,7 +18,8 @@ import IconTemplate from '../../template/IconTemplate';
 import PageSelect from '../../formControl/PageSelect';
 import ColorSelecter from '../../formControl/ColorSelecter';
 import { alignOptions } from '../../../common/initList';
-
+import CustomButton, { CustomButtonSetting } from '../button/CustomButton';
+import {useRouter } from 'next/router'
 
 const WriteEditor = dynamic(() => import("../../editor/WriteEditor"), { ssr: false });
 const FileUpload = dynamic(() => import("../../file/FileUpload"), { ssr: false });
@@ -96,16 +97,22 @@ const CarouselWrapper = styled.div`
 const CarouselItemWrapper=styled.div`
           ${(props)=>{
               return `
+              width:100%;
               height:${props.item.height}px;
               background-image: url("${props.item.src}");         
               background-repeat:no-repeat;
+              background-size:cover;
               background-position: ${props.item.backgroundPosition};
+              @media (min-width: 1200) {
+                background-position:  ${props.item.backgroundPosition};
+              }
+              .carousel-label-wrapper{
+                  text-shadow:5px 5px 5px #999999;
+              }
               `
           }}
 
-          @media (min-width: 1200) {
-            background-position: right;
-          }
+         
          
 `
 const WidthCarousel = ({data, items }) => {
@@ -147,23 +154,8 @@ const WidthCarousel = ({data, items }) => {
                         item={item}
                         className={`p-sm-1 p-md-2 p-lg-5 d-flex align-items-${fp==='top'?'start':fp==='bottom'?'end':fp}`}
                        >
-                           <div className=' w-100'>
-                           <div className={`text-${lp==='left'?'start':lp==='right'?'end':lp} `} >
-                                {HtmlParser(item.label)}
-                                
-                            </div>
-                            <div className={`text-${item.buttonObject.position}`}>
-                            {item.buttonObject.buttonType==='single'?
-                            <Button label={item.buttonObject.single.label} icon={item.buttonObject.single.icon}/>
-                            :<div className={`btn-group `}>
-                                {item.buttonObject.group.map((gItem,gi)=>{
-                                    return(
-                                        <Button key={gi} label={<>{gItem.label} <i className={gItem.icon} /></>}/>
-                                    )
-                                })}
-                                </div>}
-                            </div>
-                           </div>
+
+                           <WidthType_1 item={item} />
                         </CarouselItemWrapper>
                     )
                 })}
@@ -188,6 +180,34 @@ WidthCarousel.defaultProps = {
 
 export default WidthCarousel
 
+const WidthType_1 = ({item}) => {
+    const router=useRouter()
+    const fp=item.position.split('-')[0]
+    const lp=item.position.split('-')[1]
+    return (
+        <div className='w-100'>
+             {HtmlParser(item.label)}
+            {/* <div className={`carousel-label-wrapper text-${lp === 'left' ? 'start' : lp === 'right' ? 'end' : lp} `} >
+                {HtmlParser(item.label)}
+            </div> */}
+            <div className={`carousel-button-wrapper text-${lp}`}>
+                 <CustomButton options={item.buttonObject} onClick={()=>{
+                     router.push(item.buttonObject.url)
+                 }} />
+            </div>
+
+        </div>
+    )
+}
+
+
+
+
+
+
+
+
+
 export const WidthCarouselSetting = ({ widget, onChange }) => {
     const arr = [
         { label: 'loop', key: 'loop', inputType: 'bool', defaultValue: true, description: '무한회전 여부 결정' },
@@ -208,29 +228,48 @@ export const WidthCarouselSetting = ({ widget, onChange }) => {
         height: 150,
         label: '',
         position: 'center-center',
-        buttonBgColor:'#999999',
-        buttonHoverBgColor:'#999999',
-        buttonFontColor:'#999999',
-        buttonHoverFontColor:'#999999',
         buttonObject: {
-            isUse: false,
-            buttonType: 'single',//single , group
-            position: 'center',//right , center, left
-            single: {
-                label: 'button',
-                icon: 'bi bi-arrow-right',
-                url: '/',
-                isBlank: false
-            },
-            group: [
-                {
-                    label: 'button',
-                    icon: 'bi bi-arrow-right',
-                    url: '/',
-                    isBlank: false
-                }
-            ]
-
+            label:'Button',
+            url: '/',
+            isBlank: false,
+          
+            firstIcon: '',
+            lastIcon: '',
+            fontSize: 0.8,
+            fontFamily: 'Arial',
+            isBold: true,
+            isItalic: true,
+          
+            verticalSize: 7,
+            horizontalSize: 31,
+          
+            borderRadius: 0,
+            borderSize: 1,
+          
+            isBoxShadow: true,
+            isInset: true,
+            boxShadowVerticalPosition: 0,
+            boxShadowHorizontalPosition: 0,
+            boxShadowBlurRadius: 0,
+            boxShadowSpreadRadius: 2,
+          
+            isTextShadow: true,
+            textVerticalPosition: 1,
+            textHorizontalPosition: 1,
+            textBlurRadius: 1,
+          
+          
+            isTransparent: true,
+            isGradient: true,
+         
+            previewBgColor: '#f5f5f5',
+            gradientTopColor: '#44c767',
+            gradientBottomColor: '#5cbf2a',
+            fontColor: '#ffffff',
+            fontHoverColor:'#18ab29',
+            borderColor: '#18ab29',
+            boxShadowColor: '#3dc21b',
+            textShadowColor: '#2f6627'
         },
     }
     return (
@@ -286,9 +325,9 @@ export const WidthCarouselSetting = ({ widget, onChange }) => {
                 </table>
             </TabPanel>
             <TabPanel header="Items Setting">
-                <Button icon="bi bi-plus" label="Add Item" className='p-button-sm  py-1' onClick={() => {
+                {/* <Button icon="bi bi-plus" label="Add Item" className='p-button-sm  py-1' onClick={() => {
                     onChange({ ...widget, data: [...widget.data, newItem] })
-                }} />
+                }} /> */}
 
                 {widget.data.map((item, i) => {
                     return (
@@ -322,98 +361,113 @@ const ItemSettingTemplate = ({ item, addCallbak, lastIndex, index, deleteCallbak
     const [isTextOpen, setIsTextOpen] = useState(false)
     const [isButtonOpen, setIsButtonOpen] = useState(false)
     const [isPositionOpen, setIsPositionOpen] = useState(false)
-    const [imageState, setImageState] = useState({
-        src:item.src,
-        width:item.width,
-        height:item.hegith
-    })
-    const [isImeageSave, setIsImeageSave] = useState(true)
     return (
-        <div className="card" style={{ minWidth: '800px' }}>
-            <table className='table table-sm border'>
-                <thead>
-                    <tr>
-                        <th colSpan={3} className="text-center">
-                            No {index + 1}. Carousel Image Setting
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th rowSpan={5} className="text-center" width="25%">
-                            <Image src={item.src} width={item.width} height={item.height} alt={"회전목마 이미지"} />
-                           
-                            <small>Select Image</small>
-                        </th>
-                        <td colSpan={1}><FileUpload
+       <div className='card m-2' style={{width:"1800px"}}>
+           <div className='card-header fw-bold'> No {index+1}. Image Setting</div>
+           <div className='card-body '>
+           <div className='row'>
+            <div className='col-4'>
+                <div className='card'>
+                    <div className='card-body' style={{
+                        background:`url("${item.src}")`,
+                        backgroundSize:'cover',
+                        width:"100%",
+                        height:"300px"
+                    }}>
+                        {/* <Image src={item.src} width={item.width} height={item.height} alt={"회전목마 이미지"} /> */}
+                    </div>
+                </div>
+            </div>
+            <div className='col-3'>
+                <div className='card'>
+                    <div className='card-header fw-bold' style={{ fontSize: '13px' }}>
+                        Image Upload
+                    </div>
+                    <div className='card-body p-0'>
+                        <FileUpload
                             addId={index}
                             fileType={'image'}
                             callback={(res) => {
-                                setIsImeageSave(false)
-                                onChange({ ...item, ...res.data.result },index)
+                                onChange({ ...item, ...res.data.result }, index)
                             }} />
-                            </td>
-                            <td>
-                                ImagePosition
-                            </td>
-                            <td ><SelectButton
+                    </div>
+                    <div className='card-header fw-bold' style={{ fontSize: '13px' }}>
+                        Image Position
+                    </div>
+                    <div className='card-body p-0'>
+                        <SelectButton
                             className='p-buttonset-sm'
                             value={item.backgroundPosition}
                             options={alignOptions}
                             onChange={(e) => {
-                                onChange({ ...item, backgroundPosition:e.value },index)
+                                onChange({ ...item, backgroundPosition: e.value }, index)
                             }} />
-                            </td>
-                    </tr>
+                    </div>
 
-                    
-                    <tr>
-                        <th>Label</th>
-                        {/* <td>{HtmlParser(item.label)}</td> */}
-                        <td colSpan={2}>
-                            <DialogTemplate header="Label Changer" icon="bi bi-fonts" buttonLabel={"Open Text Editor"} isOpen={isTextOpen} setIsOpen={setIsTextOpen}>
+                    <div className='card-header fw-bold' style={{ fontSize: '13px' }}>
+                    Image Height
+                    </div>
+                    <div className='card-body p-0'>
+                        <InputNumber className='p-inputtext-sm w-100' value={item.height} onChange={(e) => {
+                            onChange({ ...item, height: e.value }, index)
+                        }} />
+                    </div>
+                </div>
+            </div>
+            <div className='col-3'>
+                <div className='card'>
+                    <div className='card-header fw-bold' style={{ fontSize: '13px' }}>
+                        Text
+                    </div>
+                    <div className='card-body p-0'>
+                    <DialogTemplate header="Label Changer" icon="bi bi-fonts" buttonLabel={"Open Text Editor"} isOpen={isTextOpen} setIsOpen={setIsTextOpen}>
                                 <WriteEditor value={item.label} width="100%" buttonList={buttonList} onChange={(html,text)=>{
                                        
                                       onChange({ ...item, label:html },index)
                                 }}/>
                             </DialogTemplate>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Button</th>
-                        <td>button template</td>
-                        <td>
-                            <DialogTemplate header={"Button Setting"} icon="bi bi-fonts" buttonLabel={"Open Button Select"} isOpen={isButtonOpen} setIsOpen={setIsButtonOpen}>
-                            <ButtonSelectTemplate buttonData={item.buttonObject} onChange={(buttonOption)=>{
-                                 onChange({ ...item, buttonObject:buttonOption },index)
-                            }}/>
+                    </div>
+                </div>
+
+
+                <div className='card'>
+                <div className='card-header fw-bold' style={{ fontSize: '13px' }}>
+                        Button Setting
+                    </div>
+                    <div className='card-body p-0'>
+                    <DialogTemplate header={"Button Setting"} icon="bi bi-fonts" buttonLabel={"Open Button Select"} isOpen={isButtonOpen} setIsOpen={setIsButtonOpen}>
+                                    <CustomButtonSetting isCallbackObject value={item.buttonObject} callback={(data) => {
+                                        onChange({ ...item, buttonObject: data }, index)
+                                        setIsButtonOpen(false)
+                                    }} />
+                       
                             </DialogTemplate>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Text Position</th>
-                        <td>{item.position}</td>
-                        <td>
-                            <DialogTemplate header="Text Position Setting" icon="bi bi-fonts" buttonLabel={"Open Position Editor"} isOpen={isPositionOpen} setIsOpen={setIsPositionOpen}>
+                    </div>
+                </div>
+
+                <div className='card'>
+                <div className='card-header fw-bold' style={{ fontSize: '13px' }}>
+                    Text Position
+                    </div>
+                    <div className='card-body p-0'>
+                    <DialogTemplate header="Text Position Setting" icon="bi bi-fonts" buttonLabel={"Open Position Editor"} isOpen={isPositionOpen} setIsOpen={setIsPositionOpen}>
                             <PositionSelectTemplate value={item.position} onClick={(value)=>{
                                     onChange({ ...item, position:value },index)
                             }}/>
                             </DialogTemplate>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={3} className="p-0"><Button icon="bi bi-trash" label="Delete Item" className='p-button-sm p-button-danger py-1' onClick={()=>{deleteCallbak(index)}} /></td>
-                    </tr>
-                    {index === lastIndex - 1 ?
-                        <tr>
-                            <td colSpan={4} className="p-0"><Button icon="bi bi-plus" label="Add Item" className='p-button-sm py-1' onClick={addCallbak} /></td>
-                        </tr>
-                        : null}
+                    </div>
+                </div>
 
-                </tbody>
-            </table>
 
+          
+            </div>
         </div>
+           </div>
+            <div className='card-footer p-0'>
+                <Button icon="bi bi-trash" label="Delete Item" className='p-button-sm p-button-danger py-1' onClick={() => { deleteCallbak(index) }} />
+                {index === lastIndex - 1 ? <Button icon="bi bi-plus" label="Add Item" className='p-button-sm py-1' onClick={addCallbak} />: null}
+            </div>
+       </div>
     )
 }
 
@@ -455,193 +509,8 @@ const PositionSelectTemplate = ({onClick,value}) => {
     )
  }
 
- const ButtonSelectTemplate=({buttonData,onChange})=>{
-     const [isIconSetOpen, setIsIconSetOpen] = useState(false)
-        const [isLinkOpen, setIsLinkOpen] = useState(false)
-     return(
-        <div style={{minWidth:"800px"}}>
-             <table className='table table-sm mb-0'>
-             <thead>
-                 <tr>
-                     <th>Button use</th>
-                     <td className='p-0'>
-                         <SelectButton 
-                         className='p-buttonset-sm'
-                         options={[{label:'Used',value:true},{label:'Not Used',value:false}]} value={buttonData.isUse} onChange={(e)=>{
-                             
-                             if(e.value!==null){
-                                 onChange({...buttonData,isUse:e.value})
-                             }
-                         }} />
-                     </td>
-                 </tr>
-             </thead>
-             {buttonData.isUse?
-                <tbody>
-                    <tr>
-                        <th>Button Positon</th>
-                        <td className='p-0'>
-                        <SelectButton 
-                         className='p-buttonset-sm'
-                         options={[{label:'Left',value:'left'},{label:'Center',value:'center'},{label:'Right',value:'right'}]} value={buttonData.position} onChange={(e)=>{
-                             
-                             if(e.value!==null){
-                                 onChange({...buttonData,position:e.value})
-                             }
-                         }} />
-                         </td>
-                    </tr>
-                    <tr>
-                        <th>Button type</th>
-                        <td className='p-0'>
-                        <SelectButton 
-                         className='p-buttonset-sm'
-                         options={[{label:'Single type',value:'single'},{label:'Group Type',value:'group'}]} value={buttonData.buttonType} onChange={(e)=>{
-                             
-                             if(e.value!==null){
-                                 onChange({...buttonData,buttonType:e.value})
-                             }
-                         }} />
-                         </td>
-                    </tr>
-                </tbody>:null
-            }
-         </table>
-         {/* 
-          label: '',
-                icon: '',
-                url: '',
-                isBlank: false
-                 */}
-                 {buttonData.isUse?
-                 buttonData.buttonType==='single'?
-                 <table className='table table-sm'>
-                             <tbody>
-                                 <tr>
-                                     <th>Label</th>
-                                     <td className='p-0' colSpan={2}><InputText className='p-inputtext-sm py-1'/></td>
-                                 </tr>
-                                 <tr>
-                                     <th>Link</th>
-                                     <td className='p-0'>
-                                     <DialogTemplate header={"Link Setting"} buttonLabel={"Open Link Select"} isOpen={isLinkOpen} setIsOpen={setIsLinkOpen}>
-                                         <PageSelect value={buttonData.single.url} onChange={(url) => {
-                                             setIsLinkOpen(false)
-                                             onChange({ ...buttonData, single: { ...buttonData.single, url: url } })
-                                         }} />
-                                     </DialogTemplate>
-                                        </td>
-                                        <td>{buttonData.single.url}</td>
-                                 </tr>
-                                 <tr>
-                                     <th>Icon</th>
-                                     <td className='p-0' colSpan={2}>
-                                     <DialogTemplate header={"Button Setting"} icon={buttonData.single.icon} buttonLabel={"Open Icon Select"} isOpen={isIconSetOpen} setIsOpen={setIsIconSetOpen}>
-                            <IconTemplate callback={(icon)=>{
-                                    setIsIconSetOpen(false)
-                                  onChange({...buttonData,single:{...buttonData.single,icon:icon}})
-                            }}/>
-                            </DialogTemplate>
-                           </td>
-                                 </tr>
-                                 <tr>
-                                     <th>New Teb Open</th>
-                                     <td className='p-0' colSpan={2}><SelectButton value={buttonData.single.isBlank} className='p-buttonset-sm'
-                                       options={[{label:'Used',value:true},{label:'Not used',value:false}]}
-                                       onChange={(e)=>{
-                                        onChange({...buttonData,single:{...buttonData.single,isBlank:e.value}})
-                                       }}
-                                       /></td>
-                                 </tr>
-                             </tbody>
-                 </table>:
-                 <div>
-                     {buttonData.group.map((item,i)=>{
-                         return(
-                            <GroupButtonSetting key={i} item={item} index={i}
-                            
-                             lastIndex={buttonData.group.length}
-                             deleteCallback={()=>{
-                                const result = Array.from(buttonData.group)
-                                result.splice(i,1)
-                                onChange({...buttonData,group:result})
-                             }}
-                             onChange={(value)=>{
-                                const result = Array.from(buttonData.group)
-                                result.splice(i,1,value)
-                                onChange({...buttonData,group:result})
-                            }}/>
-                         )
-                     })}
-                     <Button className='p-button-sm' label="Add Button" icon="bi bi-plus" onClick={()=>{
-                           onChange({...buttonData,group:[...buttonData.group,{
-                            label: 'button',
-                            icon: 'bi bi-arrow-right',
-                            url: '/',
-                            isBlank: false
-                        }]})
-                     }}/>
-                 </div>
-                 :null}
-        </div>
-     )
- }
 
- const GroupButtonSetting = ({item,onChange,index , lastIndex, deleteCallback}) => { 
-    const [isIconSetOpen, setIsIconSetOpen] = useState(false)
-    const [isLinkOpen, setIsLinkOpen] = useState(false)
-     return(
-        <table className='table table-sm my-2 border table-hover'>
-            <thead>
-                <tr>
-                    <th colSpan={3} className="text-center bg-dark text-white">No{index+1}. Button Setting</th>
-                </tr>
-            </thead>
-        <tbody>
-            <tr>
-                <th>Label</th>
-                <td className='p-0' colSpan={2}><InputText className='p-inputtext-sm py-1'value={item.label} onChange={(e)=>{  onChange({ ...item, label: e.target.value })}}/></td>
-            </tr>
-            <tr>
-                <th>Link</th>
-                <td className='p-0'>
-                <DialogTemplate header={"Link Setting"} buttonLabel={"Open Link Select"} isOpen={isLinkOpen} setIsOpen={setIsLinkOpen}>
-                    <PageSelect value={item.url} onChange={(url) => {
-                        setIsLinkOpen(false)
-                        onChange({ ...item, url: url })
-                    }} />
-                </DialogTemplate>
-                   </td>
-                   <td>{item.url}</td>
-            </tr>
-            <tr>
-                <th>Icon</th>
-                <td className='p-0' colSpan={2}>
-                <DialogTemplate header={"Button Setting"} buttonLabel={<>Open Icon Select <i className={item.icon} /></>} isOpen={isIconSetOpen} setIsOpen={setIsIconSetOpen}>
-       <IconTemplate callback={(icon)=>{
-               setIsIconSetOpen(false)
-             onChange({...item,icon:icon})
-       }}/>
-       </DialogTemplate>
-      </td>
-            </tr>
-            <tr>
-                <th>New Teb Open</th>
-                <td className='p-0' colSpan={2}><SelectButton value={item.isBlank} className='p-buttonset-sm'
-                  options={[{label:'Used',value:true},{label:'Not used',value:false}]}
-                  onChange={(e)=>{
-                   onChange({...item,isBlank:e.value})
-                  }}
-                  /></td>
-            </tr>
-            <tr>
-                <th colSpan={3} className="text-right"><Button label="Delete Button" icon="bi bi-trash" className='p-button-sm py-1 p-button-danger' onClick={deleteCallback}/></th>
-            </tr>
-          
-        </tbody>
-</table>
-     )
-  }
+
 const buttonList= [[
         "undo",
         "redo",
@@ -658,22 +527,13 @@ const buttonList= [[
         "superscript",
         "fontColor",
         "hiliteColor",
-        "textStyle",
         "removeFormat",
         "outdent",
         "indent",
         "align",
         "horizontalRule",
-        "list",
         "lineHeight",
-        "table",
-        "link",
-        "fullScreen",
-        "showBlocks",
-        "codeView",
-        "preview",
-        // "print",
-        // "save",
-        // "template"
     ]]
+
+
 

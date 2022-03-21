@@ -30,6 +30,7 @@ const PageSelect = ({ configData, boardData, groupData, value, onChange }) => {
       <Toast ref={toast} />
       <div>
         <SelectButton
+        className='p-buttonset-sm'
           options={[
             { label: "싱글페이지", value: "single" },
             { label: "그룹페이지", value: "group" },

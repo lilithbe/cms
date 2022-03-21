@@ -10,6 +10,7 @@ import PageSetting from './pageSetting/PageSetting';
 import NavgationSetting from './navSetting/NavgationSetting';
 import styled from 'styled-components';
 import { confirmDialog } from 'primereact/confirmdialog';
+import { Sidebar } from 'primereact/sidebar';
 const AdminSpeedDialWrapper = styled.div`
 position:relative;
 .p-speeddial{
@@ -23,11 +24,23 @@ position:relative;
     height:3rem;
 }
 `
+
+const CustomSidebar =styled.div`
+    z-index:1500;
+    background-color:#ffffff;
+    position:fixed;
+    width:0;
+    height:100vh;
+    top:0,
+    right:0;
+    trangition:all .2s;
+`
 const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
     const toast = useRef(null);
     const [isPageSettingOpen, setIsPageSettingOpen] = useState(false)
     const [isNavgationSettingOption, setIsNavgationSettingOption] = useState(false)
     const [isFooterSettingOpen, setIsFooterSettingOpen] = useState(false)
+    const [isSideOpen, setIsSideOpen] = useState(false)
     const items = [
         {
             label: 'Admin Mode',
@@ -58,6 +71,13 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
                 setIsFooterSettingOpen(true)
             }
         },
+        {
+            label: 'Testing',
+            icon: 'bi bi-pip',
+            command: () => {
+                setIsSideOpen(true)
+            }
+        },
        
      
       
@@ -66,7 +86,8 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
 
     return (
         authData.isAdmin && authData.grade>8?
-        <AdminSpeedDialWrapper id="adminSpeedDialWrapper" className='d-none d-lg-block'>
+        <div>
+ <AdminSpeedDialWrapper id="adminSpeedDialWrapper" className='d-none d-lg-block'>
             <Toast ref={toast} baseZIndex={9999999} />
             <Tooltip target="#adminSpeedDialWrapper .p-speeddial-action" position="left" />
             <SpeedDial model={items} direction="down-right" type="quarter-circle" radius={100} showIcon={"bi bi-gear"} buttonClassName="p-button-danger p-button-sm" />
@@ -105,7 +126,13 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
             <Dialog header="Footer Setting" visible={isFooterSettingOpen} onHide={() => { setIsFooterSettingOpen(false) }}>
                 Footer Setting
             </Dialog>
+         
         </AdminSpeedDialWrapper>
+        <CustomSidebar >
+
+            </CustomSidebar>
+        </div>
+       
     :null
   )
 }
