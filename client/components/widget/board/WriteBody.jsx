@@ -18,6 +18,7 @@ import { authUpdate } from "../../../redux";
 import { MY_IMAGE_LIST, IMAGE_UPLOAD, WRITE, initPost, MY_LIST } from "../../../common";
 import CodeEditor from '../../codemirror/CodeEditor';
 import PropTypes from 'prop-types';
+import JsonView from '../../admin/jsonView/JsonView';
 
 
 
@@ -214,6 +215,7 @@ const WriteBody = ({ authData, configData, boardData, groupData, setAuthUpdate }
 
             <div className="card">
                 <div className="card-footer d-flex justify-content-end">
+                    <JsonView json={state}/>
                     <Button className="px-5" color="primary" icon="bi bi-save" label="글등록" onClick={onSubmitHandler} />
                 </div>
             </div>

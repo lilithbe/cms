@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import { fileSizeCalculator } from '../../../lib/calculator';
 import { connect } from 'react-redux';
 import { arrayAddFormat , arrayDeleteFormat} from '../../../lib/array';
+import JsonView from '../../admin/jsonView/JsonView';
 // import $ from 'jquery' 
 
 
@@ -55,55 +56,17 @@ const moveHandler = (index) => {
 }
 
     return (
-      <div className='row'>
-        <div className='col-2 pr-0'>      
-        <ul className="list-group text-center"
-         style={{
-          minHeight: "400px",
-          width: "auto",
-          maxHeight: "680px",
-          overflow: "hidden",
-          overflowY: "scroll",
-          overflowX: "hidden",
-        }}>
-          <li className="list-group-item cursor-pointer p-0 ">
-          <Button label="파일추가" className='w-100 p-button-sm' onClick={addFileHander} />
-          </li>
-        {state.fileUploadConfig.map((item, i) => {
-          return(<li key={i} className="list-group-item p-0 d-flex justify-content-between" >
-            <div className='text-center w-100'> <span className='cursor-pointer' onClick={()=>{moveHandler(i)}}> {i+1}. {item.label}</span></div>
-            <Button  className='p-button-sm p-button-info' icon='bi bi-trash' onClick={()=>{
-              deleteHandler(i)
-            }} />
-          </li>)
-        })}
-      </ul>
+      <div className='card'>
+        <JsonView json={state.fileUploadConfig}/>
+        <div className='card-body'>      
+          <FileUploadConfigTemplate item={state.fileUploadConfig} configData={configData}  callback={(data)=>{
+              setState({
+                ...state,
+                fileUploadConfig:data
+            })
+          }}/>
         </div>
-        <div className='col-10 pl-0'>
-        <div 
-          ref={scrollBox}
-          style={{
-            minHeight: "400px",
-            width: "auto",
-            maxHeight: "680px",
-            overflow: "hidden",
-            overflowY: "scroll",
-            overflowX: "hidden",
-          }}>
-          {state.fileUploadConfig.map((item, i) => {
-            return (
-              <FileUploadConfigTemplate
-                idvalue={`filemake-${i}`}
-                configData={configData}
-                key={i}
-                item={item}
-                index={i}
-                callback={fileUploadConfigHandler}
-              />
-            );
-          })}
-        </div>
-        </div>
+       
       </div>
     );
 }
@@ -123,7 +86,7 @@ const mapStateToProps = (state) => {
 
 
 
-const FileUploadConfigTemplate = ({idvalue, index, item, callback ,configData }) => {
+const FileUploadConfigTemplate = ({item, callback ,configData }) => {
   const fileTypeOption = [
     { label: "모든파일", value: "모든파일" },
     { label: "문서파일", value: "document" },
@@ -136,14 +99,14 @@ const FileUploadConfigTemplate = ({idvalue, index, item, callback ,configData })
   const [fileExtentions, setFileExtentions] = useState([])
   const changeHandler = (value,key) => {
     const itemValue = { ...item, [key]: value }
-      callback(itemValue,index);
+      callback(itemValue);
     }
     const extentionHandler = (e) => {
       callback({
         ...item,
         fileType: e.value,
         extention: [],
-      },index);
+      });
       switch (e.value) {
         case "image":
           setFileExtentions([{label:'모든파일'},...configData.dc_imageExtention]);
@@ -174,13 +137,9 @@ const FileUploadConfigTemplate = ({idvalue, index, item, callback ,configData })
     }
 
   return (
-    <div id={idvalue} className='p-2'
-    style={{
-      minHeight: "355px",
-      maxHeight: "355px",
-    }}>
+    <div className='p-2' >
        <Toast ref={toast} />
-       <h5>{index+1}. {item.label}</h5>
+       <h5>{item.label}</h5>
        <table className="table table-sm table-bordered">
         <thead>
           <tr className="text-center">
@@ -192,14 +151,15 @@ const FileUploadConfigTemplate = ({idvalue, index, item, callback ,configData })
 
         <tbody>
           <tr>
-            <th>업로드</th>
+            <th>업로드 파일갯수</th>
             <td>
-            <InputText
+            <InputNumber
               className="p-inputtext-sm"
               required
-              value={item.label}
+              value={item.maxCount}
+              min={0} max={100}
               onChange={(e) => {
-                changeHandler(e.target.value,'label')
+                changeHandler(e.value,'maxCount')
               }}
             />
             </td>
@@ -315,7 +275,7 @@ const FileUploadConfigTemplate = ({idvalue, index, item, callback ,configData })
   );
 }
 FileUploadConfigTemplate.proptypes={
-      index:PropTypes.number.isRequired,
+
      item:PropTypes.object.isRequired,
      deleteCallback:PropTypes.func.isRequired,
      callback:PropTypes.func.isRequired,

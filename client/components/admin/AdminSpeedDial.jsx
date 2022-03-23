@@ -1,6 +1,6 @@
 import {useRef, useState} from 'react'
 import { connect } from 'react-redux'
-import { setAdminMode, setConfig } from '../../redux';
+import { setAdminMode, setDefaultConfigig } from '../../redux';
 
 import { SpeedDial } from 'primereact/speeddial';
 import { Tooltip } from 'primereact/tooltip';
@@ -11,6 +11,7 @@ import NavgationSetting from './navSetting/NavgationSetting';
 import styled from 'styled-components';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { Sidebar } from 'primereact/sidebar';
+import FooterSetting from './footerSetting/FooterSetting';
 const AdminSpeedDialWrapper = styled.div`
 position:relative;
 .p-speeddial{
@@ -35,7 +36,7 @@ const CustomSidebar =styled.div`
     right:0;
     trangition:all .2s;
 `
-const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
+const AdminSpeedDial = ({authData, setAdminMode,configData, setDefaultConfigig}) => {
     const toast = useRef(null);
     const [isPageSettingOpen, setIsPageSettingOpen] = useState(false)
     const [isNavgationSettingOption, setIsNavgationSettingOption] = useState(false)
@@ -82,7 +83,7 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
      
       
     ];
-    const [_configData , setConf] = useState(configData)
+    const [defaulteConfigData , setDefaultConfig] = useState(configData)
 
     return (
         authData.isAdmin && authData.grade>8?
@@ -97,14 +98,14 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
                     header: '경고',
                     icon: 'pi pi-exclamation-triangle',
                     accept: () => {
-                        setConfig(_configData)
+                        setDefaultConfigig(defaulteConfigData)
                         setIsPageSettingOpen(false)},
                     reject: () => {}
                 });
                  }}>
                     <PageSetting onHide={() => {
                         setIsPageSettingOpen(false)
-                        setConf(configData)
+                        setDefaultConfig(configData)
                     }}
                         toast={toast} />
             </Dialog>
@@ -113,18 +114,22 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
                     header: '경고',
                     icon: 'pi pi-exclamation-triangle',
                     accept: () => {
-                        setConfig(_configData)
+                        setDefaultConfigig(defaulteConfigData)
                         setIsNavgationSettingOption(false)},
                     reject: () => {}
                 });}}>
                     <NavgationSetting onHide={() => {
                         setIsNavgationSettingOption(false)
-                        setConf(configData)
+                        setDefaultConfig(configData)
                     }}
                         toast={toast} />
             </Dialog>
             <Dialog header="Footer Setting" visible={isFooterSettingOpen} onHide={() => { setIsFooterSettingOpen(false) }}>
-                Footer Setting
+                <FooterSetting onHide={() => {
+                        setIsFooterSettingOpen(false)
+                        setDefaultConfig(configData)
+                    }}
+                        toast={toast}/>
             </Dialog>
          
         </AdminSpeedDialWrapper>
@@ -146,7 +151,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        setConfig: (data) => dispatch(setConfig(data)),
+        setDefaultConfigig: (data) => dispatch(setDefaultConfigig(data)),
         setAdminMode: (data) => dispatch(setAdminMode(data)),
     };
 };

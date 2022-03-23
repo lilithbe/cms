@@ -87,76 +87,7 @@ route.post('/register', (req, res) => {
  
 })
 // 로그인
-route.post('/login', (req, res) => {
-    console.log('auth-login')
-    try {      
-        const userIp = getIp(req)
-        Table('accounts').findOne({
-            where: {
-                email: {
-                    [Op.eq]: req.body.email
-                }
-            }
-        })
-            .then((user) => {
-                if (user) {
-                    if(user.dataValues.type==='local'){
-                        if (bcrypt.compareSync(req.body.password, user.dataValues.password)) {
-                            Table('accounts').update({
-                                lastLoginDate:new Date(),  //로그인 시간기록
-                                lastIp:userIp
-                            },{
-                                where: {
-                                    email: {
-                                        [Op.eq]: req.body.email
-                                    }
-                                },
-                              })
-                            .then(() => {
-                                const day = req.body.remember === true ? 60 * 60 * 24 * 365 : 60*60;
-                                user.dataValues.remember = req.body.remember;
-                                (user.dataValues.exp = Math.floor(Date.now()) + day),
-                                    (user.dataValues.iat = Math.floor(Date.now()));
-                                delete user.dataValues.password
-                                user.dataValues.lastIp=userIp
-                                let token = jwt.sign(
-                                    {
-                                        ...user.dataValues,
-                                        exp: Math.floor(Date.now()/1000) + day,
-                                        iat: Math.floor(Date.now()/1000),
-                                    },
-                                    process.env.SECRET_KEY
-                                );
-                                user.dataValues.userToken = token
-                                res.status(200).json({ reqName: 'auth-login', status: true, data: user.dataValues, token: token })
-                            })
-                            .catch((err) => {
-                                res.status(200).json({ reqName: 'social_join', status: false, error: err })
-                            }) 
-    
-    
-    
-    
-                         
-                        } else {
-                            res.status(200).json({ reqName: 'auth-login', status: false, error: '비밀번호가 틀립니다.' })
-                        }
-                    }else{
-                        res.status(200).json({ reqName: 'auth-login', status: false, error: `가입유형을 확인하세요. [${user.dataValues.type}]` })
-                    }
-                    
-    
-                } else {
-                    res.status(200).json({ reqName: 'auth-login', status: false, error: '존재하지 않는 아이디입니다. 아이디를 다시확인하세요' })
-                }
-            })
-            .catch((err) => {
-                res.status(200).json({ reqName: 'auth-login', status: false, error: '관리자에게 문의하세요.' })
-            })
-    } catch (error) {
-        res.status(200).json({ reqName: 'auth-login', status: false, error: '관리자에게 문의하세요.' })
-    }
-})
+route.post('/login',(req,res)=>{ loginHandler(req,res)} )
 
 route.post('/social_join', (req,res)=>{
     const setUserData = (userData,request,result) => {
@@ -321,3 +252,75 @@ route.post('/getip', (req, res) => {
 
 
 module.exports = route;
+
+
+const loginHandler = (req, res) => {
+    console.log('auth-login')
+    try {      
+        const userIp = getIp(req)
+        Table('accounts').findOne({
+            where: {
+                email: {
+                    [Op.eq]: req.body.email
+                }
+            }
+        })
+            .then((user) => {
+                if (user) {
+                    if(user.dataValues.type==='local'){
+                        if (bcrypt.compareSync(req.body.password, user.dataValues.password)) {
+                            Table('accounts').update({
+                                lastLoginDate:new Date(),  //로그인 시간기록
+                                lastIp:userIp
+                            },{
+                                where: {
+                                    email: {
+                                        [Op.eq]: req.body.email
+                                    }
+                                },
+                              })
+                            .then(() => {
+                                const day = req.body.remember === true ? 60 * 60 * 24 * 365 : 60*60;
+                                user.dataValues.remember = req.body.remember;
+                                (user.dataValues.exp = Math.floor(Date.now()) + day),
+                                    (user.dataValues.iat = Math.floor(Date.now()));
+                                delete user.dataValues.password
+                                user.dataValues.lastIp=userIp
+                                let token = jwt.sign(
+                                    {
+                                        ...user.dataValues,
+                                        exp: Math.floor(Date.now()/1000) + day,
+                                        iat: Math.floor(Date.now()/1000),
+                                    },
+                                    process.env.SECRET_KEY
+                                );
+                                user.dataValues.userToken = token
+                                res.status(200).json({ reqName: 'auth-login', status: true, data: user.dataValues, token: token })
+                            })
+                            .catch((err) => {
+                                res.status(200).json({ reqName: 'social_join', status: false, error: err })
+                            }) 
+    
+    
+    
+    
+                         
+                        } else {
+                            res.status(200).json({ reqName: 'auth-login', status: false, error: '비밀번호가 틀립니다.' })
+                        }
+                    }else{
+                        res.status(200).json({ reqName: 'auth-login', status: false, error: `가입유형을 확인하세요. [${user.dataValues.type}]` })
+                    }
+                    
+    
+                } else {
+                    res.status(200).json({ reqName: 'auth-login', status: false, error: '존재하지 않는 아이디입니다. 아이디를 다시확인하세요' })
+                }
+            })
+            .catch((err) => {
+                res.status(200).json({ reqName: 'auth-login', status: false, error: '관리자에게 문의하세요.' })
+            })
+    } catch (error) {
+        res.status(200).json({ reqName: 'auth-login', status: false, error: '관리자에게 문의하세요.' })
+    }
+}

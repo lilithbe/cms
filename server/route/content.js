@@ -122,9 +122,6 @@ route.post("/mylist", (req, res) => {
  * 저장
  */
 route.post("/write/:boardType", (req, res) => {
-
-  
-
   try {
     const result = { reqName: "content-write" };
     const userToken = req.headers.authorization;
@@ -136,6 +133,7 @@ route.post("/write/:boardType", (req, res) => {
       req.body.contentType= req.params.boardType
       getMyAccount(writer.userId)
         .then((myAcc) => {
+          console.log(myAcc)
           setMyAccount({...myAcc,
             allExp:myAcc.allExp+ writeExp,
             exp: myAcc.exp+ writeExp
