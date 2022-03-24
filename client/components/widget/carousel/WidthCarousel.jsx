@@ -271,6 +271,7 @@ export const WidthCarouselSetting = ({ widget, onChange }) => {
           
             verticalSize: 7,
             horizontalSize: 31,
+   
           
             borderRadius: 0,
             borderSize: 1,
@@ -580,8 +581,14 @@ const PositionSelectTemplate = ({onClick,value}) => {
         {
           label: 'Size',
           children: [
-            { label: 'Vertical Size', isLabel: true, key: 'verticalSize', inputType: 'slider', checkKey: null, min: 0, max: 32 },
-            { label: 'Horizontal Size', isLabel: true, key: 'horizontalSize', inputType: 'slider', checkKey: null, min: 0, max: 76 }
+            { label: 'Padding Vertical', isLabel: true, key: 'verticalSize', inputType: 'slider', checkKey: null, min: 0, max: 32 },
+            { label: 'Padding Horizontal', isLabel: true, key: 'horizontalSize', inputType: 'slider', checkKey: null, min: 0, max: 76 },
+
+
+            { label: 'Margin Vertical', isLabel: true, key: 'marginVerticalSize', inputType: 'slider', checkKey: null, min: 0, max: 32 },
+            { label: 'Margin Horizontal', isLabel: true, key: 'marginHorizontalSize', inputType: 'slider', checkKey: null, min: 0, max: 76 }
+
+
           ]
         },
         {
@@ -641,6 +648,8 @@ const CarouselTextTemplate = ({captions,callback,children}) => {
       
         verticalSize: 7,
         horizontalSize: 31,
+        marginVerticalSize: 2,
+        marginHorizontalSize: 3,
       
         borderRadius: 0,
         borderSize: 0,
@@ -823,6 +832,7 @@ border-radius: ${props=>props.op.borderRadius}px;
 border:${props=>props.op.borderSize}px solid ${props=>props.op.borderColor};
 text-decoration:none;
 padding:${props=>props.op.verticalSize}px ${props=>props.op.horizontalSize}px;
+margin:${props=>props.op.marginVerticalSize}px ${props=>props.op.marginHorizontalSize}px;
 font-size:${props=>props.op.fontSize}rem;
 font-family:${props=>props.op.fontFamily};
 color:${props=>props.op.fontColor};

@@ -7,6 +7,7 @@ import { setPage } from "../../redux";
 import WidgetView from "../widget/WidgetView";
 
 const PageWrapper = styled.div`
+   
     ${(props) => props.styled}
 `
 

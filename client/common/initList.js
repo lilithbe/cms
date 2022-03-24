@@ -310,3 +310,41 @@ export const bootstrapPaddingOptions = [
     { label: '4', value: 'py-4' },
     { label: '5', value: 'py-5' },
 ]
+
+
+
+export const footerArray = [
+    { label: 'footerLogo', key: 'footerLogo', inputType: 'image' },
+    { label: 'isMap', key: 'isMap', inputType: 'bool' },
+    { label: 'isContact', key: 'isContact', inputType: 'bool' },
+    { label: 'isCompanyData', key: 'isCompanyData', inputType: 'bool' },
+    { label: 'isTerms', key: 'isTerms', inputType: 'bool' },
+    { label: 'isPrivacy', key: 'isPrivacy', inputType: 'bool' },
+]
+export const socialArray = [
+    { label: 'kakao', key: 'sf_kakao' },
+    { label: 'google', key: 'sf_google' },
+    { label: 'naver', key: 'sf_naver' },
+    // { label: 'naver_line', key: 'sf_naver_line' },
+    { label: 'instagram', key: 'sf_instagram' },
+    { label: 'facebook', key: 'sf_facebook' },
+    { label: 'twitter', key: 'sf_twitter' },
+    { label: 'pinterest', key: 'sf_pinterest' },
+    { label: 'youtube', key: 'sf_youtube' },
+    { label: 'github', key: 'sf_github' },
+    { label: 'telegram', key: 'sf_telegram' },
+    { label: 'twitch', key: 'sf_twitch' },
+    { label: 'vimeo', key: 'sf_vimeo' },
+]
+export const companyArray = [
+    { label: 'sc_company_owner', key: 'sc_company_owner' },
+    { label: 'sc_company_name', key: 'sc_company_name' },
+    { label: 'sc_company_saupja_no', key: 'sc_company_saupja_no' },
+    { label: 'sc_company_tel', key: 'sc_company_tel' },
+    { label: 'sc_company_fax', key: 'sc_company_fax' },
+    { label: 'sc_tongsin_no', key: 'sc_tongsin_no' },
+    { label: 'sc_company_zip', key: 'sc_company_zip' },
+    { label: 'sc_company_addr', key: 'sc_company_addr' },
+    { label: 'sc_company_privacy_admin_name', key: 'sc_company_privacy_admin_name' },
+    { label: 'sc_company_privacy_admin_email', key: 'sc_company_privacy_admin_email' },
+]

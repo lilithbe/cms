@@ -153,6 +153,7 @@ export const config = {
   dc_authPageData: { type: Sequelize.JSON },
 
   dc_navConfig: { type: Sequelize.JSON },
+  dc_footerConfig: { type: Sequelize.JSON },
   // 회사정보
   sc_company_owner: { type: Sequelize.STRING }, //대표자명
   sc_company_name: { type: Sequelize.STRING }, //회사명

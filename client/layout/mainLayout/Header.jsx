@@ -12,6 +12,7 @@ import { Button } from 'primereact/button';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import styled from 'styled-components';
+import { socialArray } from '../../common/initList';
 const HeaderWrapper = styled.div`
 ${(props)=>{return `background-image:url("${props.navConfig.headBackgroundImage}");`}}
 background-size:cover;
@@ -63,26 +64,33 @@ const Header = ({ authData, configData, isSearch, setIsSearch }) => {
 
                     </div>
                     <div className='btn-group top-social' >
-                        <SocialIconTemplate icon="bi bi-chat" isFill tooltip="Kakao" to={configData.dc_social.sf_kakao}/>
-                        <SocialIconTemplate icon="bi bi-google" tooltip="Google" to={configData.dc_social.sf_google} />
-                        <SocialIconTemplate label="N" buttonClass={"fw-bold"} tooltip="Naver" to={configData.dc_social.sf_naver} />
-                        <SocialIconTemplate icon="bi bi-line" tooltip="Naver Line" to={configData.dc_social.sf_naver_line} />
-                        <SocialIconTemplate icon="bi bi-instagram" tooltip="Instagram" to={configData.dc_social.sf_instagram} />
-                        <SocialIconTemplate icon="bi bi-facebook" tooltip="Facebook" to={configData.dc_social.sf_facebook} />
-                        <SocialIconTemplate icon="bi bi-twitter" tooltip="Twitter" to={configData.dc_social.sf_twitter} />
-                        <SocialIconTemplate icon="bi bi-pinterest" tooltip="Pinterest" to={configData.dc_social.sf_pinterest} />
-                        <SocialIconTemplate icon="bi bi-youtube" tooltip="Youtube" to={configData.dc_social.sf_youtube} />
-                        <SocialIconTemplate icon="bi bi-github" tooltip="Github" to={configData.dc_social.sf_github} />
-                        <SocialIconTemplate icon="bi bi-telegram" tooltip="Telegram" to={configData.dc_social.sf_telegram} />
-                        <SocialIconTemplate icon="bi bi-twitch" tooltip="Twitch" to={configData.dc_social.sf_twitch} />
-                        <SocialIconTemplate icon="bi bi-vimeo" tooltip="Vimeo" to={configData.dc_social.sf_vimeo} />
-                    
-                        {/* kakao */}
+
+                    {socialArray.map((item,i)=>{
+                if(configData.dc_social[item.key]!==''){
+                  return(
+                    <Button tooltip={item.label} tooltipOptions={{position:'bottom'}} className={`p-button-text p-button-plain`} >
+                        <Link href={configData.dc_social[item.key]} key={i}>
+                    <a className={item.label} target="_blank">
+                      {item.label==='naver'?<i style={{fontStyle:'normal',fontWeight:'bolder'}} >N</i>:
+                      item.label==='kakao'? <i className={`bi bi-chat`} />:
+                      <i className={`bi bi-${item.label}`} />}
+                      
+                    </a>
+                    </Link>
+                    </Button>
+                  )
+                }else{
+                  return null
+                }
+              })}
+
+
                       
                        
 
                     </div>
-                    {authData.isLogin ?
+                    {configData.dc_navConfig.accountButtonPosition==='top'?
+                    authData.isLogin ?
                             <div className='btn-group top-account-menu'>
                                 <IconTemplate icon="bi bi-envelope" isFill tooltip={"Message"}/>
                                 <IconTemplate icon="bi bi-cart" isFill tooltip={"Shop"}/>
@@ -97,7 +105,7 @@ const Header = ({ authData, configData, isSearch, setIsSearch }) => {
                             :  <div className='btn-group top-account-menu'>
                                   <IconTemplate icon="bi bi-door-open" isFill label="Sign in" to="/auth/login"/>
                                   <IconTemplate icon="bi bi-person-plus" isFill label="Sign up" to="/auth/register"/>
-                                </div>}
+                                </div>:null}
 
                 </div> : null}
             {configData.dc_navConfig.isHead ?
@@ -142,29 +150,3 @@ const IconTemplate = ({buttonClass, icon ,isFill, label,tooltip,to})=>{
     )
 }
 
-
-const SocialIconTemplate = ({buttonClass, icon ,isFill, label,tooltip,to})=>{
- 
-    const [isHover, setIsHover] = useState(false);
-
-    return(
-        to!==''?
-        <Button className={`p-button-text p-button-plain ${buttonClass}`}
-        tooltip={tooltip}
-        onMouseEnter={()=>{
-            setIsHover(true)
-        }}
-        onMouseLeave={()=>{
-            setIsHover(false)
-        }}
-        >
-           <Link to={to}>
-        <a 
-         target={"_black"}
-        >
-            <i className={`${icon}${isFill&&isHover?'-fill':''} `} />{label}
-        </a>
-        </Link>
-        </Button>:null
-    )
-}

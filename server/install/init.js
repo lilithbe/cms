@@ -302,7 +302,16 @@ const initFonts =[
     {label:'쿠키런 레귤러',value:'CookieRun-Regular',src:`url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff') format('woff')`,},
     {label:'함렛 Bold',value:'Hahmlet-Bold',src:`url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/Hahmlet-Bold.woff2') format('woff2')`,},
 ]
-
+const terms =''
+const privacy=''
+const footerInit={
+    footerLogo:'/logo-dark.png',
+    isMap:false,
+    isContact:false,
+    isCompanyData:false,
+    isTerms:false, //약관html
+    isPrivacy: false, //개인정보취급방침html
+}
 
 export const pagesInit = [
 
@@ -323,6 +332,8 @@ const leveluppointInit=()=>{
     return result
 }
 
+
+
 export const configInputInit = {
     id:v4(),
     target:'main',
@@ -337,6 +348,7 @@ export const configInputInit = {
     dc_defaultFont:"Roboto",
 
     dc_navConfig:navgationConfigInit,
+    dc_footerConfig:footerInit,
     dc_levelUpRule:leveluppointInit(),
     dc_title: process.env.SITE_NAME,
     dc_logoImage: '/logo-light.png',
@@ -379,8 +391,8 @@ export const configInputInit = {
     dc_reCommenderRegisetAddPoint: 3000,
   
     dc_RegisterPoint: 3000,
-    dc_terms: '',
-    dc_privacy: '',
+    dc_terms: terms,
+    dc_privacy: privacy,
     dc_useCert: false,
     dc_selectCert: '',
     dc_certKey: '',
