@@ -1,6 +1,6 @@
 import {useRef, useState} from 'react'
 import { connect } from 'react-redux'
-import { setAdminMode, setDefaultConfigig } from '../../redux';
+import { setAdminMode, setConfig } from '../../redux';
 
 import { SpeedDial } from 'primereact/speeddial';
 import { Tooltip } from 'primereact/tooltip';
@@ -36,7 +36,7 @@ const CustomSidebar =styled.div`
     right:0;
     trangition:all .2s;
 `
-const AdminSpeedDial = ({authData, setAdminMode,configData, setDefaultConfigig}) => {
+const AdminSpeedDial = ({authData, setAdminMode,configData, setConfig}) => {
     const toast = useRef(null);
     const [isPageSettingOpen, setIsPageSettingOpen] = useState(false)
     const [isNavgationSettingOption, setIsNavgationSettingOption] = useState(false)
@@ -97,7 +97,7 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setDefaultConfigig})
                     header: '경고',
                     icon: 'pi pi-exclamation-triangle',
                     accept: () => {
-                        setDefaultConfigig(defaulteConfigData)
+                        setConfig(defaulteConfigData)
                         setIsPageSettingOpen(false)},
                     reject: () => {}
                 });
@@ -113,7 +113,7 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setDefaultConfigig})
                     header: '경고',
                     icon: 'pi pi-exclamation-triangle',
                     accept: () => {
-                        setDefaultConfigig(defaulteConfigData)
+                        setConfig(defaulteConfigData)
                         setIsNavgationSettingOption(false)},
                     reject: () => {}
                 });}}>
@@ -150,7 +150,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        setDefaultConfigig: (data) => dispatch(setDefaultConfigig(data)),
+        setConfig: (data) => dispatch(setConfig(data)),
         setAdminMode: (data) => dispatch(setAdminMode(data)),
     };
 };

@@ -132,6 +132,7 @@ const FileUpload = ({fileType ,containerName, callback, authData, configData }) 
       const uuid= uuidv4()
       const fileChangeHandler = (e) => { 
         e.preventDefault()
+        console.log( e.target.files)
         const arr=[]
         for (let i = 0; i < e.target.files.length; i++) {
           const file = e.target.files[i];

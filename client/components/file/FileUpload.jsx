@@ -133,6 +133,7 @@ const FileUpload = ({fileType ,containerName, callback, authData, configData }) 
       const fileChangeHandler = (e) => { 
         e.preventDefault()
         const arr=[]
+        console.log( e.target.files)
         for (let i = 0; i < e.target.files.length; i++) {
           const file = e.target.files[i];
           const extention =  file.name.split('.')[file.name.split('.').length-1]

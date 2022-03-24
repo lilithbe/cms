@@ -50,6 +50,7 @@ route.post("/multiple", async(req, res) => {
 route.post("/single", async(req, res) => {
   try {
     const userData = getTokenToUserData(req)
+    console.log(req.files)
     singleUpload(req, userData,'upload').then((saveData) => {
       Table("log_file")
         .create(saveData)

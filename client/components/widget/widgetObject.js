@@ -21,6 +21,7 @@ export const widgetList=[
         value:'WidthCarousel',
         description:'넓은 화면용 회전 이미지',
         defaultOptions:{
+            baseHeight:800,
             loop: true,
             nav: true,
             dots: true,
