@@ -13,7 +13,7 @@ import { postApi } from '../../../api';
 import { ADMIN_CONFIG_UPDATE } from '../../../common';
 import { SelectButton } from 'primereact/selectbutton';
 import ColorSelecter from '../../formControl/ColorSelecter';
-import FileUpload from '../../file/FileUpload';
+
 import {
     alignOptions,
     boolOptions,
@@ -29,6 +29,7 @@ import {
 import IconSelect from '../../formControl/IconSelect';
 import LinkSelectMB from '../../formControl/LinkSelectMB';
 import FontFamilyDropdwon from '../../formControl/FontFamilyDropdwon';
+import SingleFileUpload from '../../file/SingleFileUpload';
 const NavgationSettingWrapper = styled.div`
    
 `
@@ -266,11 +267,11 @@ const OptionSettingTemplate = ({ isLoading, arr, navConfig, callback }) => {
                             )
                         case 'image':
                             return (
-                                <FileUpload fileType='image'
+                                <SingleFileUpload fileType='image'
                                     addId={row.key}
                                     callback={(res) => {
-                                        console.log(res.data.result)
-                                        callback({...navConfig,[row.key]:res.data.result.src})
+                                     
+                                         callback({...navConfig,[row.key]:res.data.result[0].src})
                                     }} />
                             )
                         case 'fontsize':

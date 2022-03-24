@@ -52,7 +52,7 @@ route.post("/single", async(req, res) => {
     const userData = getTokenToUserData(req)
     singleUpload(req, userData,'upload').then((saveData) => {
       Table("log_file")
-        .bulkCreate(saveData)
+        .create(saveData)
         .then((data) => {
           res.status(200).json({ reqName: "file-upload", status: true, result: [data] });
         })
