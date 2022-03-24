@@ -19,6 +19,7 @@ import { MY_IMAGE_LIST, IMAGE_UPLOAD, WRITE, initPost, MY_LIST } from "../../../
 import CodeEditor from '../../codemirror/CodeEditor';
 import PropTypes from 'prop-types';
 import JsonView from '../../admin/jsonView/JsonView';
+import FileUpload from '../../file/FileUpload';
 
 
 
@@ -114,7 +115,6 @@ const WriteBody = ({ authData, configData, boardData, groupData, setAuthUpdate }
             setIsLoading,
             `${WRITE}/${boardConfig.boardType}`,
             (res) => {
-                console.log(res)
                 if (res.data.status) {
                     setAuthUpdate(res.data.account);
                     router.push(`/content/list/${board}`);
@@ -210,6 +210,10 @@ const WriteBody = ({ authData, configData, boardData, groupData, setAuthUpdate }
         <div>
             <AdminMenuTemplate  state={state} setState={setState} authData={authData} groupConfig={groupConfig} boardConfig={boardConfig} />
             {template(lawData.boardType)}
+
+
+            <FileUploadTemplate state={state} setState={setState} law={law} lawData={lawData}/>
+
             <SeriesTemplate state={state} setState={setState} authData={authData} law={law} lawData={lawData} board={board} />
             <Toast ref={toast} />
 
@@ -370,7 +374,6 @@ const SeriesTemplate = ({state, setState,board, authData, law, lawData}) => {
     const [oldSelected, setOldSelected] = useState({});
     useEffect(() => {
       postApi(setIsLoading,MY_LIST,(res)=>{
-        console.log(res)
           if(res.data.status){
            
             setUserPosts(res.data.list)
@@ -391,9 +394,6 @@ const SeriesTemplate = ({state, setState,board, authData, law, lawData}) => {
     };
 
 
-    useEffect(() => {
-      console.log(state);
-    }, [state]);
     
     
     return(
@@ -712,3 +712,13 @@ const CodeBoardTemplate = ({ state, setState, authData, law, lawData }) => {
         </div>
     )
 };
+
+
+const FileUploadTemplate = ({state, setState, law, lawData }) => { 
+    const [fileState, setFileState] = useState([])
+    return(
+        <WriteSectionCard title='File Upload'>
+            <JsonView json={lawData} />
+        </WriteSectionCard>
+    )
+ }

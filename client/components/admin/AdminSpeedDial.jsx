@@ -54,7 +54,6 @@ const AdminSpeedDial = ({authData, setAdminMode,configData, setDefaultConfigig})
             label: 'Page Setting',
             icon: 'bi bi-pencil-square',
             command: (e) => {
-                console.log(e.item)
                 setIsPageSettingOpen(true)
             }
         },

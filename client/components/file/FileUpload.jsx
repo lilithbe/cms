@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { postApi } from "../../api"
 import { FILE_UPLOAD } from '../../common'
+import PropTypes from 'prop-types';
+import { Button } from 'primereact/button';
 
-const FileUpload = ({fileType , callback, authData, configData , addId}) => {
-    const [fileState, setFileState] = useState({
-        size:0,name:'',
-    })
+
+const FileUpload = ({fileType ,containerName, callback, authData, configData }) => {
+    const [fileState, setFileState] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    const [isFileUpload, setIsFileUpload] = useState(false)
     const [acceptState, setAcceptState] = useState("");
     const [buttonLabel, setButtonLabel] = useState("이미지업로드");
+  
     const fileSizeCalculator = (_fileSize,_fixed) => {
         var str
         let fileSize=Number(_fileSize)
@@ -49,7 +50,7 @@ const FileUpload = ({fileType , callback, authData, configData , addId}) => {
     }
     useEffect(() => {
         let result = "";
-        let fileKey = "";
+        let fileKey = "dc_imageExtention";
         switch (fileType) {
           case "document":
             fileKey = "dc_documentExtention";
@@ -63,59 +64,106 @@ const FileUpload = ({fileType , callback, authData, configData , addId}) => {
             fileKey = "dc_fileExtention";
             setButtonLabel("파일업로드");
             break;
-          default:
+          case "image":
             fileKey = "dc_imageExtention";
             setButtonLabel("이미지업로드");
             break;
+          default:
+            fileKey = "all";
+            setButtonLabel("파일업로드");
+            break;
         }
-    
-        for (let i = 0; i < configData[fileKey].length; i++) {
-          result += `.${configData[fileKey][i].label},`;
+        if(fileType!=='all'){
+          for (let i = 0; i < configData[fileKey].length; i++) {
+            result += `.${configData[fileKey][i].label},`;
+          }
+        }else{
+          for (let i = 0; i < configData.dc_documentExtention.length; i++) {
+            result += `.${configData.dc_documentExtention[i].label},`;
+          }
+          for (let i = 0; i < configData.dc_videoExtention.length; i++) {
+            result += `.${configData.dc_videoExtention[i].label},`;
+          }
+          for (let i = 0; i < configData.dc_fileExtention.length; i++) {
+            result += `.${configData.dc_fileExtention[i].label},`;
+          }
+          for (let i = 0; i < configData.dc_imageExtention.length; i++) {
+            result += `.${configData.dc_imageExtention[i].label},`;
+          }
         }
+       
         setAcceptState(result);
         return () => {
           setAcceptState(0);
-          setButtonLabel("이미지업로드");
+          setButtonLabel("파일업로드");
         };
       }, [configData, fileType]);
-
-    const fileSaveHandler = (e) => {
-        const files = e.target.files;
-        const formData = new FormData();
-    
-        formData.append("upload", files[0]);
-        postApi(
-          setIsLoading,
-          `${FILE_UPLOAD}/${fileType}s/save`,
-          (res) => {
-            if (res.data.status) {
-                callback(res)
-                setFileState(res.data.result)
-                console.log(res.data.result)
-                setIsFileUpload(true)
-            }
-          },
-          formData,
-          authData.userToken
+      const  uuidv4=() =>{
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+          (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
+      }
+    const fileSaveHandler = (e) => {
+      e.preventDefault()
+        if(fileState.length!==0) {
+          const formData = new FormData();
+          for (let i = 0; i < fileState.length; i++) {
+            const file = fileState[i];
+            formData.append("upload", file);
+          }
+       
+          formData.append("containerName", containerName);
+          postApi(
+            setIsLoading,
+            `${FILE_UPLOAD}/multiple`,
+            (res) => {
+              if (res.data.status) {
+               
+                  callback(res)
+                  setFileState([])
+                
+              }
+            },
+            formData,
+            authData.userToken
+          );
+        }
       };
-
+      const uuid= uuidv4()
+      const fileChangeHandler = (e) => { 
+        e.preventDefault()
+        const arr=[]
+        for (let i = 0; i < e.target.files.length; i++) {
+          const file = e.target.files[i];
+          const extention =  file.name.split('.')[file.name.split('.').length-1]
+          const result = acceptState.replaceAll('.','').split(',').findIndex(f=>f===extention)
+          if(result !==-1){
+            arr.push(file)
+          }
+        }
+        setFileState(arr)
+       }
   return (
-<div className="w-100">
-    <label htmlFor={`fileUpload-${fileType}${addId}`} className="btn btn-info btn-sm">
-      <i className="bi-image mr-2" /> {buttonLabel}
-    </label>
-    <input
-      name="upload"
-      accept={acceptState}
-      onChange={fileSaveHandler}
-      type="file"
-      id={`fileUpload-${fileType}${addId}`}
-      style={{ display: "none" }}
-      required
-    />
-    <span>{fileState.name} {fileSizeCalculator(fileState.size,2)}</span>
-  </div>
+    <form encType='multipart/form-data' onSubmit={fileSaveHandler}>
+      <div className="w-100">
+        <label htmlFor={`fileUpload-${uuid}`} className="btn btn-info btn-sm">
+          <i className="bi-image mr-2" /> {buttonLabel}
+        </label>
+        <input
+          name="upload"
+          accept={acceptState}
+          onChange={fileChangeHandler}
+          type="file"
+          id={`fileUpload-${uuid}`}
+          style={{ display: "none" }}
+          required
+          multiple
+        />
+        <span>{fileState.length}</span>
+        <Button type='submit' label="save" className='py-1 p-button-sm' disabled={fileState.length === 0 ? true : false} />
+      </div>
+    </form>
+
   )
 }
 const mapStateToProps = (state) => {
@@ -129,3 +177,16 @@ const mapStateToProps = (state) => {
     };
   };
   export default  connect(mapStateToProps, mapDispatchToProps)(FileUpload)
+
+  FileUpload.propTypes = {
+    fileType: PropTypes.string,
+    callback:PropTypes.func.isRequired,
+    containerName:PropTypes.string
+  };
+  FileUpload.defaultProps = {
+    fileType: 'image',
+    containerName:'user-upload',
+    callback:()=>{
+      console.log('callback function is not found')
+    }
+  };

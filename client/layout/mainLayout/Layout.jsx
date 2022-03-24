@@ -8,6 +8,7 @@ import { Button } from "primereact/button";
 import styled from "styled-components";
 import { ScrollTop } from 'primereact/scrolltop';
 import { SpeedDial } from 'primereact/speeddial';
+import UserSpeedDial from "./UserSpeedDial";
 const MainLayout = ({ children, configData, authData }) => {
   const [isSearch, setIsSearch] = useState(false);
 
@@ -15,6 +16,7 @@ const MainLayout = ({ children, configData, authData }) => {
   return (
     <div>
       <AdminSpeedDial />
+      <UserSpeedDial />
       <Header configData={configData} authData={authData} isSearch={isSearch} setIsSearch={setIsSearch} />
       <AppMenu setIsSearch={setIsSearch} />
       {children}
