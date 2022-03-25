@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 
-import { EDITOR_FILE_UPLOAD, EDITOR_FILE_DELETE, MY_IMAGE_LIST } from '../../common/path';
+import { EDITOR_FILE_UPLOAD, EDITOR_FILE_DELETE, MY_FILE_LIST } from '../../common/path';
 import { arrayDeleteFormat, arrayAddFormat } from '../../lib'
 import { postApi } from '../../api'
 import CodeMirror from 'codemirror'
@@ -16,7 +16,9 @@ const SunEditor = dynamic(async () => {
     }
 },
     { ssr: false })
-const WriteEditor = ({ configData, buttonList, authData, onChange, autoFocus, value, minHeight, height, mode, lang, width, editorFiles, setEditorFiles }) => {
+
+
+const WriteEditor = ({bgColor, configData, buttonList, authData, onChange, autoFocus, value, minHeight, height, mode, lang, width, editorFiles, setEditorFiles }) => {
     const [uploadFiles, setUploadFiles] = useState(editorFiles)
     const [isLoading, setIsLoading] = useState(false)
     const editor = useRef();
@@ -36,11 +38,9 @@ const WriteEditor = ({ configData, buttonList, authData, onChange, autoFocus, va
     // }, [value])
 
     return (
-        <div  >
+        <div style={{backgroundColor:bgColor}}>
 
             <SunEditor
-
-
                 autoFocus={autoFocus}
                 setOptions={{
                     codeMirror: CodeMirror,
@@ -67,17 +67,17 @@ const WriteEditor = ({ configData, buttonList, authData, onChange, autoFocus, va
                     // Or Array of button list, eg. [['font', 'align'], ['image']]
                     // plugins: [font] set plugins, all plugins are set by default
                     // Other option
-                    imageUploadUrl: `${EDITOR_FILE_UPLOAD}/images`,
+                    imageUploadUrl: `${EDITOR_FILE_UPLOAD}`,
                     // https://github.com/JiHong88/SunEditor
                     imageGalleryHeader: {
                         Authorization: authData.userToken,
-                        "Access-Control-Allow-Methods": "POST"
+                        "Access-Control-Allow-Methods": "GET"
                     },
                     imageUploadHeader: {
                         Authorization: authData.userToken,
                         "Access-Control-Allow-Methods": "POST"
                     },
-                    imageGalleryUrl: MY_IMAGE_LIST,
+                    imageGalleryUrl: MY_FILE_LIST+'image',
                     //  "https://etyswjpn79.execute-api.ap-northeast-1.amazonaws.com/suneditor-demo",
                     getText: (e) => { console.log(e) },
 
@@ -86,43 +86,20 @@ const WriteEditor = ({ configData, buttonList, authData, onChange, autoFocus, va
                 lang={lang}
 
                 setDefaultStyle="font-size: 18px; background:unset;"
-                onImageUpload={(targetElement, index, state, info, remainingFilesCount, core) => {
+              
 
-                    let key
-                    if (state === 'create') {
-                        key = info.src.split("images/")[1].split("_")[0]
-                        setUploadFiles((prev) => {
-                            // setEditorFiles([...prev,{...info,key:key}])
-                            return [...prev, { ...info, key: key }]
-                        })
-                    } else if (state === 'update') {
-                        setUploadFiles((prev) => {
-                            key = prev[index].key
-                            let newKey = info.src.split("images/")[1].split("_")[0]
-                            postApi(setIsLoading, `${EDITOR_FILE_DELETE}/images`, (res) => {
-                            }, { key: key }, authData.userToken)
-                            // setEditorFiles(arrayAddFormat(prev,{...info,key:newKey},index))
-                            return arrayAddFormat(prev, { ...info, key: newKey }, index)
-                        })
-                    } else if (state === 'delete') {
-                        setUploadFiles((prev) => {
-                            key = prev[index].key
-                            postApi(setIsLoading, `${EDITOR_FILE_DELETE}/images`, (res) => {
-                            }, { key: key }, authData.userToken)
-                            // setEditorFiles(arrayDeleteFormat(prev,index))
-                            return arrayDeleteFormat(prev, index)
-                        })
-                    }
-
-                }}
-
+                
 
 
                 getSunEditorInstance={getSunEditorInstance}
 
                 onChange={(html) => {
                     const text = editor.current.getText()
-                    onChange(html, text)
+                    const images=editor.current.getImagesInfo()
+                    console.log(images)
+                   
+                    onChange(html, text, images)
+                   
                 }}
             />
 
@@ -135,6 +112,7 @@ WriteEditor.propTypes = {
     editorFiles: PropTypes.array,
     setEditorFiles: PropTypes.func,
     autoFocus: PropTypes.bool,
+    bgColor:PropTypes.string
 }
 WriteEditor.defaultProps = {
     lang: "ko",
@@ -181,6 +159,7 @@ WriteEditor.defaultProps = {
             // "template"
         ]
     ],
+    bgColor:'#ffffff',
     height: 500,
     minHeight: 300,
     width: "auto",

@@ -2,7 +2,7 @@ import express from "express";
 import fileUpload from "express-fileupload";
 import env from "dotenv";
 import { Table } from "../../managers/modelsManager/index";
-import { multipleUpload, singleUpload} from '../../lib/file'
+import { editorUpload, multipleUpload, singleUpload} from '../../lib/file'
 import { getTokenToUserData } from "../../lib/auth";
 env.config();
 
@@ -50,8 +50,7 @@ route.post("/multiple", async(req, res) => {
 route.post("/single", async(req, res) => {
   try {
     const userData = getTokenToUserData(req)
-    console.log(req.files)
-    singleUpload(req, userData,'upload').then((saveData) => {
+    editorUpload(req, userData,'upload').then((saveData) => {
       Table("log_file")
         .create(saveData)
         .then((data) => {

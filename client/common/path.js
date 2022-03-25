@@ -44,23 +44,24 @@ const WIDGET = `${API}/widget`
 export const WIDGET_ADMIN_CREATE = `${WIDGET}/create` //
 export const WIDGET_ADMIN_UPDATE = `${WIDGET}/update` //
 export const WIDGET_ADMIN_DELETE = `${WIDGET}/delete` //
+
 //파일관련
 const FILE= `${API}/file` //
-const UPLOAD = `${FILE}/upload` //
-export const IMAGE_UPLOAD = `${UPLOAD}/azure/images` 
+
+
 export const FILE_UPLOAD =`${FILE}/upload`
-
-
-
-
-export const THUMNAIL_UPLOAD = `${UPLOAD}/thumnail` 
-export const MY_IMAGE_LIST = `${FILE}/list/myimagelist`
-export const MY_FILE_LIST = `${FILE}/list/`
-export const XLSX_UPLOAD = `${FILE}/xlsx`
-export const FILE_DOWNLOAD= `${FILE}/download/`
-
+export const MY_FILE_LIST = `${FILE}/list/my/`
 export const EDITOR_FILE_UPLOAD=`${FILE}/editor/upload`
 export const EDITOR_FILE_DELETE=`${FILE}/editor/delete`
+
+
+
+
+
+
+export const FILE_DOWNLOAD= `${FILE}/download/`
+
+
 
 
 

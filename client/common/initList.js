@@ -1,5 +1,8 @@
 import moment from "moment";
-
+const trueFalseOptions=[
+    { value: true, label: 'true' },
+    { value: false, label: 'false' }
+]
 export const carouselInit={
     type:'carousel',
     value:'carousel',
@@ -348,3 +351,104 @@ export const companyArray = [
     { label: 'sc_company_privacy_admin_name', key: 'sc_company_privacy_admin_name' },
     { label: 'sc_company_privacy_admin_email', key: 'sc_company_privacy_admin_email' },
 ]
+
+
+export const reactJsonViewArray=[
+    {label:'Theme',key:'theme', valueType:'string', defaultValue:'rjv-default',options:[
+        { value: 'apathy', label: 'apathy' },
+        { value: 'apathy:inverted', label: 'apathy:inverted' },
+        { value: 'ashes', label: 'ashes' },
+        { value: 'bespin', label: 'bespin' },
+        { value: 'brewer', label: 'brewer' },
+        { value: 'bright:inverted', label: 'bright:inverted' },
+        { value: 'bright', label: 'bright' },
+        { value: 'chalk', label: 'chalk' },
+        { value: 'codeschool', label: 'codeschool' },
+        { value: 'colors', label: 'colors' },
+        { value: 'eighties', label: 'eighties' },
+        { value: 'embers', label: 'embers' },
+        { value: 'flat', label: 'flat' },
+        { value: 'google', label: 'google' },
+        { value: 'grayscale', label: 'grayscale' },
+        {
+            value: 'grayscale:inverted',
+            label: 'grayscale:inverted'
+        },
+        { value: 'greenscreen', label: 'greenscreen' },
+        { value: 'harmonic', label: 'harmonic' },
+        { value: 'hopscotch', label: 'hopscotch' },
+        { value: 'isotope', label: 'isotope' },
+        { value: 'marrakesh', label: 'marrakesh' },
+        { value: 'mocha', label: 'mocha' },
+        { value: 'monokai', label: 'monokai' },
+        { value: 'ocean', label: 'ocean' },
+        { value: 'paraiso', label: 'paraiso' },
+        { value: 'pop', label: 'pop' },
+        { value: 'railscasts', label: 'railscasts' },
+        { value: 'rjv-default', label: 'rjv-default' },
+        { value: 'shapeshifter', label: 'shapeshifter' },
+        {
+            value: 'shapeshifter:inverted',
+            label: 'shapeshifter:inverted'
+        },
+        { value: 'solarized', label: 'solarized' },
+        { value: 'summerfruit', label: 'summerfruit' },
+        {
+            value: 'summerfruit:inverted',
+            label: 'summerfruit:inverted'
+        },
+        { value: 'threezerotwofour', label: 'threezerotwofour' },
+        { value: 'tomorrow', label: 'tomorrow' },
+        { value: 'tube', label: 'tube' },
+        { value: 'twilight', label: 'twilight' }
+    ]
+},
+    {label:'Display Data Types',key:'displayDataTypes', valueType:'boolean', defaultValue:'true',options:[
+        { value: true, label: 'true' },
+        { value: false, label: 'false' }
+    ]},
+    {label:'Display Data Size',key:'displayObjectSize', valueType:'boolean', defaultValue:'true',options:[
+        { value: true, label: 'true' },
+        { value: false, label: 'false' }
+    ]},
+    {label:'Icon Style',key:'iconStyle', valueType:'string', defaultValue:'circle',options:[
+        { value: 'circle', label: 'circle' },
+                    { value: 'square', label: 'square' },
+                    { value: 'triangle', label: 'triangle' }
+    ]},
+  
+{label:'Enable Edit',key:'onEdit', valueType:'(edit)=>{}', defaultValue:'false',options:trueFalseOptions},
+{label:'Enable Add',key:'onAdd',valueType:'(add)=>{}', defaultValue:'false',options:trueFalseOptions},
+{label:'Enable Delete',key:'onDelete',valueType:'(delete)=>{}', defaultValue:'false',options:trueFalseOptions},
+{label:'Enable Clipboard',key:'enableClipboard',valueType:'boolean or (copy)=>{}', defaultValue:'true',options:trueFalseOptions},
+
+{label:'Indent Width',key:'indentWidth',valueType:'integer', defaultValue:4,options:[
+    { value: 0, label: 0 },
+    { value: 1, label: 1 },
+    { value: 2, label: 2 },
+    { value: 3, label: 3 },
+    { value: 4, label: 4 },
+    { value: 5, label: 5 },
+    { value: 6, label: 6 },
+    { value: 7, label: 7 },
+    { value: 8, label: 8 },
+    { value: 9, label: 9 },
+    { value: 10, label: 10 }
+]},
+{label:'Collapsed',key:'collapsed',valueType:'boolean or integer', defaultValue:'false',options:[
+    { value: true, label: 'true' },
+                    { value: false, label: 'false' },
+                    { value: 1, label: 1 },
+                    { value: 2, label: 2 }
+]},
+{label:'Collapse Strings After Length',key:'collapseStringsAfter',valueType:'integer', defaultValue:'false',options:[
+    { value: false, label: 'false' },
+    { value: 5, label: 5 },
+    { value: 10, label: 10 },
+    { value: 15, label: 15 },
+    { value: 20, label: 20 }
+]}
+]
+
+
+

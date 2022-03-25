@@ -245,9 +245,7 @@ const mobileMenuList=<div >
       setIsFixed(false)
     }
   }, [configData.dc_navConfig.isFixedValueCopy, isTest]);
-  useEffect(() => {
-    console.log(position);
-  }, [position]);
+
 
 const [isMobileSideMenuOpen, setIsMobileSideMenuOpen] = useState(false)
   return (
@@ -353,7 +351,6 @@ const DropdownMenuTemplate = ({ configData, item, linkClickCallback, index }) =>
         resut.push(eItem)
       }
     }
-    console.log(resut)
     return resut
   }
   return (

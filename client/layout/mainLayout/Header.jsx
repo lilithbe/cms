@@ -68,8 +68,8 @@ const Header = ({ authData, configData, isSearch, setIsSearch }) => {
                     {socialArray.map((item,i)=>{
                 if(configData.dc_social[item.key]!==''){
                   return(
-                    <Button tooltip={item.label} tooltipOptions={{position:'bottom'}} className={`p-button-text p-button-plain`} >
-                        <Link href={configData.dc_social[item.key]} key={i}>
+                    <Button  key={i} tooltip={item.label} tooltipOptions={{position:'bottom'}} className={`p-button-text p-button-plain`} >
+                        <Link href={configData.dc_social[item.key]}>
                     <a className={item.label} target="_blank">
                       {item.label==='naver'?<i style={{fontStyle:'normal',fontWeight:'bolder'}} >N</i>:
                       item.label==='kakao'? <i className={`bi bi-chat`} />:

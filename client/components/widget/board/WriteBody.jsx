@@ -20,7 +20,7 @@ import CodeEditor from '../../codemirror/CodeEditor';
 import PropTypes from 'prop-types';
 import JsonView from '../../admin/jsonView/JsonView';
 import FileUpload from '../../file/FileUpload';
-
+import styled from 'styled-components';
 
 
 const Editor = dynamic(() => import("../../editor/WriteEditor"), { ssr: false });
@@ -315,6 +315,14 @@ const SubjectInput = ({ state, setState }) => {
         </WriteSectionCard>
     )
 };
+const EditorDiv=styled.div`
+@media(max-width: 991px){
+    .se-toolbar{
+        display:none;
+    }
+  }
+    
+`
 const WriteContent = ({ state, setState, lawData, authData }) => {
     const writeTemplate = (
         <div className="card mb-2">
@@ -328,20 +336,7 @@ const WriteContent = ({ state, setState, lawData, authData }) => {
                             ? "Sale Content"
                             : "Content"}
             </div>
-            <div className="card-body p-0">
-                {state.isMobile ? (
-                    <textarea
-                        className="form-control"
-                        style={{ minHeight: "400px" }}
-                        value={state.string}
-                        onChange={(e) => {
-                            setState({
-                                ...state,
-                                string: e.target.value
-                            });
-                        }}
-                    />
-                ) : (
+            <EditorDiv className="card-body p-0">
                     <Editor
                         autoFocus={false}
                         editorFiles={state.editorFiles}
@@ -354,14 +349,13 @@ const WriteContent = ({ state, setState, lawData, authData }) => {
                         value={state.content}
                         height="auto"
                         minHeight={300}
-                        onChange={(html, str) => {
+                        onChange={(html, str,image) => {
                             setState((prev) => {
-                                return { ...prev, content: html, string: str };
+                                return { ...prev, content: html, string: str ,editorFiles:image};
                             });
                         }}
                     />
-                )}
-            </div>
+            </EditorDiv>
         </div>
     );
     return writeTemplate

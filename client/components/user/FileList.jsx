@@ -11,7 +11,7 @@ const FileList = ({fileType,authData}) => {
     const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
       postApi(setIsLoading,MY_FILE_LIST+fileType,(res)=>{
-        setFileData(res.data.list)
+        setFileData(res.data.result)
       },{},authData.userToken)
     
      return () => {
@@ -62,7 +62,7 @@ const FileList = ({fileType,authData}) => {
                 <DataTable value={fileData} responsiveLayout="scroll" size="small" tableClassName='border'>
                     <Column body={(row)=>{
                         return(
-                            <div>
+                            <div style={{backgroundColor:"#999999"}}>
                                 <Image src={row.src} width={100} height={70} alt={row.alt} preview imageStyle={{objectFit :'cover'}}downloadable={true} />
                             </div>
                         )

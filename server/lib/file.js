@@ -141,6 +141,63 @@ export const singleUpload = async (req, userData, formName) => {
 
 };
 
+export const editorUpload = async (req, userData, formName) => {
+    try {
+  
+        const key = v4();
+        let width = 0
+        let height = 0
+   
+        const content = req.files[formName]
+        const blobName = key + '_' + content.name
+
+        const containerClient = blobServiceClient.getContainerClient('editor'); //images , 
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        const src = `${`${defaultUrl}/editor/${blobName}`}`
+        await blockBlobClient.upload(content.data, content.size);
+        await blockBlobClient.setHTTPHeaders(content.data, { blobContentType: content.mimetype }).then(async () => {
+            if (content.mimetype.split("/")[0] === 'image') {
+                const userFolder = `./public/u/${userData.userId}`;
+                const exDir = `${userFolder}/key_${blobName}`; //이미지 파일 width height 측정용 임시파일 위치
+                await content.mv(exDir);
+                const image = await sharp(exDir);
+                await image.metadata().then(async (metadata) => {
+                    width = metadata.width
+                    height = metadata.height
+                    return exDir
+                }).then((dir) => {
+                    fs.unlink(dir, (err) => {
+                        if (err) {
+                            console.error(err)
+                        }
+                    })
+                })
+            }
+        })
+        return {
+            write_data: userData,
+            write_id: userData.userId,
+            status: 1,
+            use_download: 0,
+            download_count: 0,
+            request: "editor",
+            file_type: content.mimetype.split("/")[0],
+            name: content.name,
+            key: key,
+            alt: `${key}-${content.name.split(".")[0]} ${content.mimetype.split("/")[0]}`,
+            size: content.size,
+            extention: content.mimetype.split("/")[1],
+            url: src,
+            src: src,
+            width: width,
+            height: height,
+        };
+    } catch (error) {
+        console.log(error)
+    }
+
+};
+
 export const fileDownloadToAzure = async (containerName, blobName) => {
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blobClient = containerClient.getBlobClient(blobName)
