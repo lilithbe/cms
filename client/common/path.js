@@ -65,7 +65,7 @@ export const FILE_DOWNLOAD= `${FILE}/download/`
 
 
 
-//일정관련
+//일정
 const CALENDAR =`${API}/calendar`
 export const CALENDAR_EVENT_CREATE =`${CALENDAR}/event/create`
 export const CALENDAR_EVENT_LIST =`${CALENDAR}/event/list`
@@ -80,7 +80,7 @@ export const POPUP_ALL_LIST =`${POPUP}/all_list`
 export const POPUP_DELETE =`${POPUP}/delete`
 export const POPUP_UPDATE =`${POPUP}/update`
 
-//일정관련
+//설문조사
 const VOTE =`${API}/vote`
 export const VOTE_CREATE =`${VOTE}/create`
 export const VOTE_LIST =`${VOTE}/list`
@@ -91,8 +91,11 @@ export const VOTE_VIEW =`${VOTE}/view`
 
 // 상품 카테고리
 const shop = `${API}/shop`
-export const ROOT_CATEGORY= `${shop}/category/root-list`
-export const CHILDREN_CATEGORY= `${shop}/category/children-list`
+export const CATEGORY_LIST_ALL= `${shop}/category/all-list`
+export const CATEGORY_CREATE= `${shop}/category/create`
+export const CHILDREN_CATEGORY_LIST= `${shop}/category/children-list`
+export const CATEGORY_DELETE = `${shop}/category/delete`
+
 export const PRODUCTION_CATEGORY_GETCOUNT= `${shop}/category/getcount`
 export const PRODUCTION_LIST_DATEUP=`${shop}/list/dateup`
 

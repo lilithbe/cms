@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Toast } from "primereact/toast";
 import { postApi } from "../../api";
-import { IMAGE_UPLOAD, MY_IMAGE_LIST } from "../../common";
+import { FILE_UPLOAD, MY_FILE_LIST } from "../../common";
 
 const ImageViewTemplate = ({ imageCallback, authData, isCallback }) => {
   const toast = useRef(null);
@@ -17,7 +17,7 @@ const ImageViewTemplate = ({ imageCallback, authData, isCallback }) => {
     formData.append("upload", files[0]);
     postApi(
       setIsLoading,
-      IMAGE_UPLOAD,
+      FILE_UPLOAD+'/single',
       (res) => {
         if (res.data.status) {
           setImagePreviewState([...imagePreviewState, res.data.data]);
@@ -32,7 +32,7 @@ const ImageViewTemplate = ({ imageCallback, authData, isCallback }) => {
   useEffect(() => {
     postApi(
       setIsLoading,
-      MY_IMAGE_LIST,
+      MY_FILE_LIST+'image',
       (res) => {
         setImagePreviewState(res.data.result);
       },

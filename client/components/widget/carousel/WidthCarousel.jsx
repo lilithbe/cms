@@ -1,8 +1,7 @@
-import { useEffect, useState, useRef, useMemo } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import 'react-owl-carousel2/lib/styles.css';
 import { SelectButton } from 'primereact/selectbutton';
 import { InputNumber } from 'primereact/inputnumber'
-import Image from 'next/image'
 import dynamic from 'next/dynamic';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Button } from 'primereact/button'
@@ -11,13 +10,7 @@ import { Dialog } from 'primereact/dialog'
 import PropTypes from 'prop-types'
 import styled from 'styled-components';
 import { InputText } from 'primereact/inputtext';
-// import FileUpload from '../../file/FileUpload';
-import HtmlParser from 'react-html-parser';
-import { Dropdown } from 'primereact/dropdown';
-import IconTemplate from '../../template/IconTemplate';
-import PageSelect from '../../formControl/PageSelect';
 import ColorSelecter from '../../formControl/ColorSelecter';
-import { alignOptions } from '../../../common/initList';
 import CustomButton, { CustomButtonSetting } from '../button/CustomButton';
 import {useRouter } from 'next/router'
 import { Slider } from 'primereact/slider';
@@ -26,7 +19,7 @@ import FontFamilyDropdwon from '../../formControl/FontFamilyDropdwon';
 import IconSelect from '../../formControl/IconSelect';
 
 import anime from 'animejs'
-const WriteEditor = dynamic(() => import("../../editor/WriteEditor"), { ssr: false });
+
 const SingleFileUpload = dynamic(() => import("../../file/SingleFileUpload"), { ssr: false });
 
 const OwlCarousel = dynamic(async () => {

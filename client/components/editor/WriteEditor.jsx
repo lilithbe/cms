@@ -1,10 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 
-import { EDITOR_FILE_UPLOAD, EDITOR_FILE_DELETE, MY_FILE_LIST } from '../../common/path';
-import { arrayDeleteFormat, arrayAddFormat } from '../../lib'
-import { postApi } from '../../api'
+import { EDITOR_FILE_UPLOAD,  MY_FILE_LIST } from '../../common/path';
+
 import CodeMirror from 'codemirror'
 
 import dynamic from 'next/dynamic'
@@ -14,8 +13,7 @@ const SunEditor = dynamic(async () => {
         return <Editor {...props}
         />
     }
-},
-    { ssr: false })
+},{ ssr: false })
 
 
 const WriteEditor = ({bgColor, configData, buttonList, authData, onChange, autoFocus, value, minHeight, height, mode, lang, width, editorFiles, setEditorFiles }) => {

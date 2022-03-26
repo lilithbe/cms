@@ -2,7 +2,7 @@ import {useState} from 'react'
 import { BI_ICONS } from '../../common/bi-icon'
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
-
+import PropTypes from 'prop-types'
 const IconSelect = ({ tip, callback, icon, buttonClass }) => {
     const [isIconOpen, setIsIconOpen] = useState(false)
     return (
@@ -19,6 +19,19 @@ const IconSelect = ({ tip, callback, icon, buttonClass }) => {
         </>
     )
 }
+IconSelect.propTypes ={
+    tip:PropTypes.string,
+    buttonClass:PropTypes.string,
+    icon:PropTypes.string,
+    callback:PropTypes.func,
+}
+IconSelect.propTypes = {
+    tip:'',
+    buttonClass:'',
+    icon:'',
+    callback:()=>{}
+  }
+
 
 export default IconSelect
 

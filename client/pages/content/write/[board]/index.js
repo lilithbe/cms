@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import WriteTemplate from "../../../../components/template/content/WriteTemplate";
+
 import WriteBody from "../../../../components/widget/board/WriteBody";
 const ContentWrite = () => {
   const router = useRouter();

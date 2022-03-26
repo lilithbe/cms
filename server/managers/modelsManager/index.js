@@ -26,6 +26,11 @@ import {
     widget_model,
     page_model,
 
+
+
+    // shop
+    category
+
 } from '../models'
 
 const model = (table) => {
@@ -57,10 +62,12 @@ const model = (table) => {
         case 'review': return review_model;
         case 'qna': return qna_model;
 
+        // Shop
+        case 'category' :return category;
 
         // trash??
         // case 'page':return pages;
-        // case 'category' :return category;
+     
         // case 'production' :return production;
         // case 'tree_data ': return tree_data_model;
         // case 'dev_todos': return dev_todos;

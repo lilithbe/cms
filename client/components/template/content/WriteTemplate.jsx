@@ -16,14 +16,14 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 
 import { postApi } from "../../../api";
-import { MY_IMAGE_LIST, IMAGE_UPLOAD, WRITE } from "../../../common";
+import { MY_IMAGE_LIST, IMAGE_UPLOAD, WRITE, MY_FILE_LIST, FILE_UPLOAD } from "../../../common";
 import { authUpdate } from "../../../redux";
 import { arrayAddFormat } from "../../../lib/array";
 import ImageViewTemplate from "../ImageViewTemplate";
 
 import FileViewTemplate from "../FileViewTemplate";
 import { ScrollPanel } from "primereact/scrollpanel";
-import Image from "next/image";
+import { Image } from 'primereact/image';
 import moment from "moment";
 import HtmlParser from "react-html-parser";
 const Editor = dynamic(() => import("../../editor/WriteEditor"), { ssr: false });
@@ -296,7 +296,7 @@ const ThumbnailTemplate = ({ state, setState, law, lawData, grade, authData }) =
     formData.append("upload", files[0]);
     postApi(
       setIsLoading,
-      IMAGE_UPLOAD,
+      FILE_UPLOAD+'',
       (res) => {
         if (res.data.status) {
           setImageList([...imageList, res.data.data]);
@@ -312,7 +312,7 @@ const ThumbnailTemplate = ({ state, setState, law, lawData, grade, authData }) =
   useEffect(() => {
     postApi(
       setIsLoading,
-      MY_IMAGE_LIST,
+      MY_FILE_LIST+'image',
       (res) => {
         setImageList(res.data.result);
       },
@@ -335,7 +335,7 @@ const ThumbnailTemplate = ({ state, setState, law, lawData, grade, authData }) =
           <div className="row" style={{ height: "170px" }}>
             <div className=" col-12 col-md-5 col-lg-3 py-0 pr-0 pl-lg-0">
               <div className="d-flex justify-content-center align-items-center p-2" style={{ height: "140px" }}>
-                <img src={thumbnailState} width="100%" alt="thumbnail-image" />
+                <Image src={thumbnailState} width="100%" alt="thumbnail-image" />
               </div>
               <div>
                 <label htmlFor="imageUploadLabel" className="btn btn-info btn-sm w-100">
@@ -358,7 +358,7 @@ const ThumbnailTemplate = ({ state, setState, law, lawData, grade, authData }) =
                           setThumbnailState(item.url);
                         }}
                       >
-                        <img className=" border border-danger mr-2 cursor-pointer" src={item.url} width="100%" alt="thumbnail-image" />
+                        <Image className=" border border-danger mr-2 cursor-pointer" src={item.url} width="100%" alt="thumbnail-image" />
                       </div>
                     );
                   })}
@@ -509,10 +509,10 @@ const VoteTemplate = ({ state, setState, law, lawData, grade, authData }) => {
 const ImageBoardTemplate = ({ state, setState, law, lawData, grade, authData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const itemTemplate = (item) => {
-    return <img src={item.src} alt={item.alt} style={{ minWidth: "500px", width: item.width }} />;
+    return <Image src={item.src} alt={item.alt} style={{ minWidth: "500px", width: item.width }} />;
   };
   const thumbnailTemplate = (item) => {
-    return <img src={item.thumbnail} alt={item.alt} style={{ width: "70px" }} />;
+    return <Image src={item.thumbnail} alt={item.alt} style={{ width: "70px" }} />;
   };
   const caption = (item) => {
     return (

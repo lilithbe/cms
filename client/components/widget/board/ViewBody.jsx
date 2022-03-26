@@ -8,7 +8,7 @@ import Link from "next/link";
 import Htmlparser from "react-html-parser";
 import HandButton from "../../formControl/HandButton";
 import PropTypes from "prop-types";
-
+import { Image } from 'primereact/image';
 
 import { Galleria } from 'primereact/galleria';
 import CodeEditor from "../../codemirror/CodeEditor";
@@ -199,7 +199,7 @@ const [activeIndex, setActiveIndex] = useState(0)
 
       <div className="card-body row">
         <div className="col-sm-12 col-md-4 col-lg-2 text-center">
-          <img className="rounded-circle" src={post.writeData.userImage} alt={post.writeData[post.writeData.useName]} width={100} />
+          <Image className="rounded-circle" src={post.writeData.userImage} alt={post.writeData[post.writeData.useName]} width={100} />
         </div>
         <div className="col-sm-12 col-md-8 col-lg-5">
           <div>

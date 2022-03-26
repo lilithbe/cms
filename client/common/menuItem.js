@@ -1,7 +1,6 @@
 
 
 export const admin_menu = (admin)=>{
-    console.log(admin.isAdmin)
     if(!admin.isAdmin){
         return []
     }else{
@@ -15,10 +14,9 @@ export const admin_menu = (admin)=>{
                     { label: 'Dashboard', icon: 'pi pi-fw pi-server', to: '/admin'}
                 ]
             }:{},
+
            
-           
-            {
-                label:'Setting',icon: 'pi pi-fw pi-cog',items:[ 
+            {label:'Setting',icon: 'pi pi-fw pi-cog',items:[ 
                     admin.adminJ?
                     {
                         label:'설정',  icon: 'pi pi-cog',items:[ 
@@ -45,19 +43,7 @@ export const admin_menu = (admin)=>{
                     }:{},
                     {
                         label:'사이트 관리', icon: 'pi pi-globe',items:[ 
-                            admin.menuJ?{ label: '메뉴 관리', icon: 'pi pi-cog', to: '/admin/setup/navigation'}:{}, 
-                            // admin.pageJ?{ label: '페이지 관리', icon: 'pi pi-fw pi-clone', items:[
-                            //     { label: '새로운 페이지만들기', icon: 'bi bi-plus', to: '/admin/setup/page-management/create'},
-                            //     { label: '메인 페이지', icon: 'bi bi-cup', to: '/admin/setup/page-management/main'},
-                            //     { label: '커스텀 페이지', icon: 'pi pi-cog', to: '/admin/setup/page-management/custom'},
-                            //     { label: '그룹페이지', icon: 'bi bi-diagram-2', to: '/admin/setup/page-management/group'},
-                            //     { label: '게시판 목록 페이지', icon: 'bi bi-layout-text-window-reverse', to: '/admin/setup/page-management/boardlist'},
-                            //     { label: '게시판 뷰페이지', icon: 'bi bi-layout-text-sidebar', to: '/admin/setup/page-management/boardview'},
-                            //     { label: '프로필 페이지', icon: 'bi bi-person-lines-fill', to: '/admin/setup/page-management/profile'},
-                            //     { label: '로그인 페이지', icon: 'bi bi-person-square', to: '/admin/setup/page-management/login'},
-                            //     { label: '회원가입 페이지', icon: 'bi bi-person-plus', to: '/admin/setup/page-management/register'},
-                                
-                            // ]}:{},
+                            admin.menuJ?{ label: '메뉴 관리', icon: 'pi pi-cog', to: '/admin/setup/navigation'}:{},         
                             admin.pointJ?{ label: '포인트 관리', icon: 'bi bi-currency-dollar', to: '/admin/member/point-management'}:{}, 
                             admin.voteJ?{ label: '투표 관리', icon: 'bi bi-collection', to: '/admin/member/voting-management'}:{}, 
                             admin.popupJ?{ label: '팝업 관리', icon: 'pi pi-sitemap', to: '/admin/popup' }:{},
@@ -72,14 +58,25 @@ export const admin_menu = (admin)=>{
                 items: [
                     {label: 'UI KIT', icon: 'pi pi-fw pi-id-card', items: [
                         {label: 'Button', icon: 'pi pi-fw pi-mobile', to: '/admin/components/fileupload'},
-        
-        
-                       
                     ]},
                   
                    
                 ]
             }:{},
+
+
+            {
+                label: 'Shop', 
+                items: [
+                    {label: 'Category', icon: 'pi pi-fw pi-id-card', items: [
+                        {label: 'Category', icon: 'pi pi-fw pi-mobile', to: '/admin/shop/category'},
+                    ]},
+                  
+                   
+                ]
+            }
+
+
         ];
     }
     

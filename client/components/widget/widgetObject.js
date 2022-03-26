@@ -1,8 +1,9 @@
-import ProductionCarousel from "./carousel/ProductionCarousel";
+import ProductionCarousel, { ProductionCarouselSetting } from "./carousel/ProductionCarousel";
 // import WidthCarousel from "./carousel/WidthCarousel";
 import { WidthCarouselSetting } from "./carousel/WidthCarousel";
 import dynamic from 'next/dynamic';
 import SimpleBoardList, { SimpleBoardListSetting } from "./board/SimpleBoardList";
+import { SimpleBoardListSettingOptions } from "../../common";
 
 const WidthCarousel = dynamic( () => import("./carousel/WidthCarousel"), { ssr: false });
 
@@ -12,9 +13,27 @@ export const widgetList=[
         label:'Production Carousel',
         value:'ProductionCarousel',
         description:'제품용 회전 이미지',
-        defaultOptions:{},
+        defaultOptions:{
+            baseHeight: 409,
+            loop: true,
+            nav: true,
+            dots: true,
+            margin: 0,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            buttonBgColor: "#999999",
+            buttonHoverBgColor: "#999999",
+            buttonFontColor: "#999999",
+            buttonHoverFontColor: "#999999",
+            imageBorderRadius: 0,
+            categoryName: '',
+            sectionTitle:'',
+            sectionBgImage:'',
+            sectionBgColor:'',
+            
+        },
         component:(props)=><ProductionCarousel {...props} />,
-        setting:()=>{}
+        setting:(widget,onChange)=><ProductionCarouselSetting onChange={onChange} widget={widget}/>
     },
     {
         label:'Width Carousel',
@@ -28,6 +47,11 @@ export const widgetList=[
             margin: 0,
             autoplay: true,
             autoplayTimeout: 5000,
+            buttonBgColor:"#999999",
+            buttonHoverBgColor:"#999999",
+            buttonFontColor:"#999999",
+            buttonHoverFontColor:"#999999",
+            
         },
         component:(props)=><WidthCarousel {...props} />,
         setting:(widget,onChange)=><WidthCarouselSetting onChange={onChange} widget={widget}/>
@@ -36,17 +60,7 @@ export const widgetList=[
         label:'Simple Board List',
         value:'SimpleBoardList',
         description:'SimpleBoardList',
-        settingOptions: [
-            { label: 'selected board name', key: 'boardValue', inputType: 'boardList', description: '보여질 게시판 이름을 선택하세요.' },
-            { label: 'limit post count', key: 'limit', inputType: 'inputNumber', min: 1, max: 30, description: '최대 글 갯수를 입력하세요.' },  
-            { label: 'limit subject count', key: 'subjectLimitCount', inputType: 'inputNumber', min: 20, max: 100, description: '최대 제목의 글자 갯수를 입력하세요.' },
-
-            { label: 'Title', key: 'title', defaultValue: '게시판 제목', inputType: 'inputText', description: '' },
-            { label: 'Title Bg Color', key: 'titleBgColor', defaultValue: '#00000000', inputType: 'color', description: '' },
-            { label: 'Title Font Color', key: 'titleFontColor', defaultValue: '#000000', inputType: 'color', description: '' },
-            { label: 'table Body Bg Color', key: 'tableBodyBgColor', defaultValue: '#00000000', inputType: 'color', description: '' },
-            { label: 'table Body Font Color', key: 'tableBodyFontColor', defaultValue: '#000000', inputType: 'color', description: '' },
-          ],
+        settingOptions: SimpleBoardListSettingOptions,
         defaultOptions:{
             boardValue: '',
             limit:5,

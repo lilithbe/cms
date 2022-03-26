@@ -1,22 +1,15 @@
  import express from "express";
  import { Op } from 'sequelize'
  import { Table} from '../../managers/modelsManager/index'
- import jwt from "jsonwebtoken";
+ import {v4} from 'uuid'
  const route = express.Router();
  
- //그룹 목록
- route.post('/root-list',(req,res)=>{
-     console.log('root-list')   
+
+ route.post('/all-list',(req,res)=>{
      try {
-            Table('category').findAll({
-                where: {
-                    level: {
-                        [Op.eq]: 1
-                    }
-                }
-                })
+            Table('category').findAll()
                 .then((list) => {
-                    res.status(200).json({reqName:'category-list',status: true,  categorys:list })
+                    res.status(200).json({reqName:'category-list',status: true,  list:list })
                 })
                 .catch((err) => {
                     res.status(200).json({ reqName:'category-list',status: false, error: err })
@@ -25,20 +18,53 @@
         res.status(200).json({ reqName:'category-list',status: false, error: err })
        }
  })
+ route.post('/create',(req,res)=>{
+    try {
+            req.body.id=v4()
+        Table('category').findOne({
+            where: {
+             label: {
+                    [Op.eq]: req.body.label
+                }
+            }
+            })
+            .then((list) => {
+                if(list){
+                    console.log(list)
+                    res.status(200).json({ reqName: 'category-list', status: false, error: '중복된 이름입니다.' })
+                }else{
+                    Table('category').create(req.body)
+                    .then((data) => {
+                        res.status(200).json({ reqName: 'category-list', status: true, data: data })
+                    })
+                    .catch((err) => {
+                        res.status(200).json({ reqName: 'category-list', status: false, error: err })
+                    })
+                }
+              
+            })
+            .catch((err) => {
+                res.status(200).json({ reqName: 'category-list', status: false, error: err })
+            })
+      } catch (err) {
+       res.status(200).json({ reqName:'category-list',status: false, error: err })
+      }
+})
 
 
- route.post('/children-list',(req,res)=>{
+
+ route.post('/children-list/:parentId',(req,res)=>{
     console.log('children-list')   
     try {
            Table('category').findAll({
                where: {
-                parentId: {
-                       [Op.eq]: req.body.parentId
+                id: {
+                       [Op.eq]: req.params.parentId
                    }
                }
                })
                .then((list) => {
-                   res.status(200).json({reqName:'children_category-list',status: true,  categorys:list })
+                   res.status(200).json({reqName:'children_category-list',status: true,  list:list })
                })
                .catch((err) => {
                    res.status(200).json({ reqName:'children_category-list',status: false, error: err })
@@ -47,6 +73,66 @@
        res.status(200).json({ reqName:'_childrencategory-list',status: false, error: err })
       }
 })
+
+route.post('/delete/:id',(req,res)=>{
+    try {
+            Table('category').destroy({
+                where: {
+                    [Op.or]: [
+                        {
+                            path: {
+                                [Op.like]: "%" + '/' + req.body.label 
+                            }
+                        },
+                        {
+                            path: {
+                                [Op.like]: "%" + '/' + req.body.label +'/'+ "%"
+                            }
+                        },
+                        {
+                            id: {
+                                [Op.eq]: req.body.id
+                            }
+                        },
+                    ]
+                }
+            })
+            .then((list) => {
+                Table('category').findAll()
+                    .then((list) => {
+                        res.status(200).json({ reqName: 'children_category-list', status: true, list: list })
+                    })
+                    .catch((err) => {
+                        res.status(200).json({ reqName: 'children_category-list', status: false, error: err })
+                    })
+            })
+            .catch((err) => {
+                res.status(200).json({ reqName: 'category-delete', status: false, error: err })
+            })
+
+
+
+
+
+  
+        //    Table('category').destroy({
+        //     where: {
+        //      id: {
+        //             [Op.eq]: req.params.id
+        //         }
+        //     }
+        //     })
+        //        .then(() => {
+        //            res.status(200).json({reqName:'category-delete',status: true, })
+        //        })
+        //        .catch((err) => {
+        //            res.status(200).json({ reqName:'category-delete',status: false, error: err })
+        //        })
+      } catch (err) {
+       res.status(200).json({ reqName:'category-delete',status: false, error: err })
+      }
+})
+
 
 route.post('/getcount',(req,res)=>{
     console.log('getcount')   

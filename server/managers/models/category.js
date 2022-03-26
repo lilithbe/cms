@@ -13,6 +13,10 @@ export const category= {
         type: Sequelize.STRING,
     },
 
+    path:{
+        type: Sequelize.STRING,
+        defaultValue:'/'
+    },
 
 
     parentId:{

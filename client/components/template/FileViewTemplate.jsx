@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { MY_FILE_LIST, FILE_UPLOAD, FILE_DOWNLOAD } from "../../common";
 import fileDownload from "file-saver";
-import Image from "next/image";
+import { Image } from 'primereact/image';
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { DataView, DataViewLayoutOptions } from "primereact/dataview";
@@ -139,7 +139,7 @@ const FileViewTemplate = ({ fileType, authData, configData, isCallback, callback
     return (
       <div className="col-12">
         <div className="product-list-item">
-          <img src={`${data.thumbnail}`} style={{width:"80px"}} alt={data.alt} />
+          <Image src={`${data.thumbnail}`} style={{width:"80px"}} alt={data.alt} />
           <div className="product-list-detail">
             <div className="product-name">{data.name}</div>
             <i className="pi pi-tag product-category-icon"></i>
@@ -156,7 +156,7 @@ const FileViewTemplate = ({ fileType, authData, configData, isCallback, callback
       <div className="col-12 md:col-4">
         <div className="product-grid-item card">
           <div className="product-grid-item-content">
-            <img src={`${data.url}`} alt={data.alt} />
+            <Image src={`${data.url}`} alt={data.alt} />
             <div className="product-name">{data.name}</div>
             <div className="product-description">{data.size}</div>
           </div>

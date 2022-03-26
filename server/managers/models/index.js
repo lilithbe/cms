@@ -23,7 +23,7 @@ export * from './vote'
 
 export * from './widget'
 export * from './page'
-// export * from './category'
+export * from './category'
 // export * from './tree_data'
 // export * from './dev_todos'
 
